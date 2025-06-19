@@ -10,7 +10,7 @@ export default class RegistrarCliente {
 	@inject("enderecoRepository")
 	enderecoRepository?: EnderecoRepository;
 	
-	async execute (input: any) {
+	async execute (input: RegistrarClienteInput) {
 		const clienteData = await this.clienteRepository?.buscarClientePorTelefone(input.telefone);
 		if (clienteData) throw new Error("Cliente já cadastrado");
 		
@@ -18,18 +18,17 @@ export default class RegistrarCliente {
 		const cliente = Cliente.create(input.nome, input.telefone);
 		await this.clienteRepository?.salvarCliente(cliente);
 		
-		// Se houver endereço no input, cria e salva o endereço
 		if (input.endereco) {
 			const endereco = new Endereco(
-				0, // ID será gerado pelo banco
+				0,
 				cliente.getClienteId(),
-				input.endereco.rua,
-				input.endereco.numero,
-				input.endereco.complemento || "",
-				input.endereco.bairro,
-				input.endereco.cep,
-				input.endereco.pontoReferencia || "",
-				input.endereco.enderecoPrincipal || true
+				input.endereco.getRua(),
+				input.endereco.getNumero().getValue(),
+				input.endereco.getComplemento() || "",
+				input.endereco.getBairro(),
+				input.endereco.getCep().getValue(),
+				input.endereco.getPontoReferencia() || "",
+				input.endereco.getEnderecoPrincipal()
 			);
 			await this.enderecoRepository?.salvarEndereco(endereco);
 		}
@@ -38,4 +37,10 @@ export default class RegistrarCliente {
 			clienteId: cliente.getClienteId()
 		};
 	}
+}
+
+type RegistrarClienteInput = {
+	nome: string;
+	telefone: string;
+	endereco: Endereco;
 }

@@ -7,6 +7,7 @@ import sinon from "sinon";
 import Cliente from "../../src/domain/entity/Cliente";
 import UUID from "../../src/domain/vo/UUID";
 import Endereco from "../../src/domain/entity/Endereco";
+import { EnderecoRepositoryDatabase } from "../../src/infra/repository/EnderecoRepository";
 
 let registrarCliente: RegistrarCliente;
 let buscarCliente: BuscarCliente;
@@ -15,19 +16,23 @@ let endereco: Endereco;
 beforeEach(() => {
 	Registry.getInstance().provide("databaseConnection", new PgPromiseAdapter());
 	Registry.getInstance().provide("clienteRepository", new ClienteRepositoryDatabase());
+	Registry.getInstance().provide("enderecoRepository", new EnderecoRepositoryDatabase());
 	registrarCliente = new RegistrarCliente();
 	buscarCliente = new BuscarCliente();
-	endereco = new Endereco(0, UUID.create().getValue(), "Rua das Flores", "123", "Apto 101", "Jardim", "SP", "57055-100", "Próximo ao shopping", true);
+	endereco = new Endereco(0, UUID.create().getValue(), "Rua das Flores", "123", "Apto 101", "Jardim", "57055-100", "Próximo ao shopping", true);
 });
 
 test("Deve criar um cliente com stub e buscar por telefone", async function () {
 	const clienteRepositoryStub = sinon.createStubInstance(ClienteRepositoryDatabase);
+	const enderecoRepositoryStub = sinon.createStubInstance(EnderecoRepositoryDatabase);
 
 	// Primeiro, simula que o cliente não existe
 	clienteRepositoryStub.buscarClientePorTelefone.resolves(undefined);
 	clienteRepositoryStub.salvarCliente.resolves();
+	enderecoRepositoryStub.salvarEndereco.resolves();
 
 	Registry.getInstance().provide("clienteRepository", clienteRepositoryStub);
+	Registry.getInstance().provide("enderecoRepository", enderecoRepositoryStub);
 
 	const registrarCliente = new RegistrarCliente();
 	const buscarCliente = new BuscarCliente();
@@ -52,10 +57,16 @@ test("Deve criar um cliente com stub e buscar por telefone", async function () {
 
 test("Não deve criar um cliente duplicado com stub", async function () {
 	const clienteRepositoryStub = sinon.createStubInstance(ClienteRepositoryDatabase);
+	const enderecoRepositoryStub = sinon.createStubInstance(EnderecoRepositoryDatabase);
+	
 	const clienteExistente = new Cliente(UUID.create().getValue(), "John Doe", "82991021732", endereco);
 	clienteRepositoryStub.buscarClientePorTelefone.resolves(clienteExistente);
 	clienteRepositoryStub.salvarCliente.resolves();
+	enderecoRepositoryStub.salvarEndereco.resolves();
+	
 	Registry.getInstance().provide("clienteRepository", clienteRepositoryStub);
+	Registry.getInstance().provide("enderecoRepository", enderecoRepositoryStub);
+	
 	const registrarCliente = new RegistrarCliente();
 	const input = {
 		nome: "John Doe",

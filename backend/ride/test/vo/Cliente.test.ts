@@ -5,7 +5,7 @@ import UUID from "../../src/domain/vo/UUID";
 let endereco: Endereco;
 
 beforeEach(function () {
-	endereco = new Endereco(0, UUID.create().getValue(), "Rua das Flores", "123", "Apto 101", "Jardim", "SP", "57055-100", "Próximo ao shopping", true);
+	endereco = new Endereco(0, UUID.create().getValue(), "Rua das Flores", "123", "Apto 101", "Jardim", "57055-100", "Próximo ao shopping", true);
 });
 
 test("Deve criar uma conta", function () {

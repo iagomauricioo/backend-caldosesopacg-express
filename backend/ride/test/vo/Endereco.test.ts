@@ -9,8 +9,6 @@ test("Deve criar um endereço válido", function () {
 		"123",
 		"Apto 45",
 		"Centro",
-		"São Paulo",
-		"SP",
 		"57055-100",
 		"",
 		false
@@ -26,8 +24,6 @@ test("Não deve criar um endereço com CEP inválido", function () {
 		"123",
 		"Apto 45",
 		"Centro",
-		"São Paulo",
-		"SP",
 		"123",
 		"",
 		false
@@ -42,11 +38,9 @@ test("Deve testar o toString", function () {
 		"123",
 		"Apto 45",
 		"Centro",
-		"São Paulo",
-		"SP",
 		"57055-100",
 		"",
 		false
 	);
-	expect(endereco.toString()).toBe("Rua das Flores, 123 - Apto 45, Centro, São Paulo - SP, CEP: 57055-100, Ponto de referência: ");
+	expect(endereco.toString()).toBe("Rua das Flores, 123 - Apto 45, Centro, CEP: 57055-100, Ponto de referência: ");
 });
