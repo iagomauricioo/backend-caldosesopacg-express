@@ -64,6 +64,7 @@ CREATE TABLE enderecos_cliente (
     bairro VARCHAR(100) NOT NULL,
     ponto_referencia TEXT,
     endereco_principal BOOLEAN DEFAULT false,
+    cep VARCHAR(10) NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

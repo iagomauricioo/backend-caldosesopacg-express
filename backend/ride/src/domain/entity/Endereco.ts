@@ -1,8 +1,11 @@
-import Cep from "./Cep";
-import NumeroEndereco from "./NumeroEndereco";
-import Estado from "./Estado";
+import Cep from "../vo/Cep";
+import NumeroEndereco from "../vo/NumeroEndereco";
+import Estado from "../vo/Estado";
+import UUID from "../vo/UUID";
 
 export default class Endereco {
+	private id: number;
+	private clienteId: UUID;
 	private rua: string;
 	private numero: NumeroEndereco;
 	private complemento: string;
@@ -10,8 +13,12 @@ export default class Endereco {
 	private cidade: string;
 	private estado: Estado;
 	private cep: Cep;
+	private pontoReferencia: string;
+	private enderecoPrincipal: boolean;
 
-	constructor (rua: string, numero: string, complemento: string, bairro: string, cidade: string, estado: string, cep: string) {
+	constructor (id: number, clienteId: string, rua: string, numero: string, complemento: string, bairro: string, cidade: string, estado: string, cep: string, pontoReferencia: string, enderecoPrincipal: boolean) {
+		this.id = id;
+		this.clienteId = new UUID(clienteId);
 		this.rua = rua;
 		this.numero = new NumeroEndereco(numero);
 		this.complemento = complemento;
@@ -19,6 +26,16 @@ export default class Endereco {
 		this.cidade = cidade;
 		this.estado = new Estado(estado);
 		this.cep = new Cep(cep);
+		this.pontoReferencia = pontoReferencia;
+		this.enderecoPrincipal = enderecoPrincipal;
+	}
+
+	getId() {
+		return this.id;
+	}
+
+	getClienteId () {
+		return this.clienteId.getValue();
 	}
 
 	getRua() {
@@ -47,6 +64,14 @@ export default class Endereco {
 
 	getCep() {
 		return this.cep;
+	}
+
+	getPontoReferencia() {
+		return this.pontoReferencia;
+	}
+
+	getEnderecoPrincipal() {
+		return this.enderecoPrincipal;
 	}
 
 	toString() {
