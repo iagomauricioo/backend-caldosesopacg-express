@@ -28,7 +28,13 @@ export class ExpressAdapter implements HttpServer {
 	}
 
 	listen(port: number): void {
-		return this.app.listen(port);
+		const server = this.app.listen(port, () => {
+			console.log(`🚀 Servidor rodando na porta ${port}`);
+			console.log(`📡 API disponível em: http://localhost:${port}`);
+			console.log(`⏰ Iniciado em: ${new Date().toLocaleString('pt-BR')}`);
+		});
+		
+		return server;
 	}
 
 }
