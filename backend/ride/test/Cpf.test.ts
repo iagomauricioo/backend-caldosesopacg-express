@@ -14,5 +14,5 @@ test.each([
 	"11111111111",
 	"97a56321558"
 ])("Não deve validar um cpf inválido %s", function (value: string) {
-	expect(() => new Cpf(value)).toThrow(new Error("Invalid cpf"));
+	expect(() => new Cpf(value)).toThrow(new Error("CPF inválido"));
 });

@@ -2,7 +2,7 @@ export default class Email {
 	private value: string;
 
 	constructor (value: string) {
-		if (!value.match(/^(.+)@(.+)$/)) throw new Error("Invalid email");
+		if (!value.match(/^(.+)@(.+)$/)) throw new Error("Email inválido");
 		this.value = value;
 	}
 

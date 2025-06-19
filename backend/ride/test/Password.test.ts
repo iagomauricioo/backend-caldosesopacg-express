@@ -6,5 +6,5 @@ test("Deve criar uma senha válida", function () {
 });
 
 test("Não criar uma senha inválida", function () {
-	expect(() => new Password("1234")).toThrow(new Error("Invalid password"));
+	expect(() => new Password("1234")).toThrow(new Error("Senha inválida"));
 });
