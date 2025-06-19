@@ -1,4 +1,4 @@
-import Senha from "../src/domain/vo/Senha"
+import Senha from "../../src/domain/vo/Senha"
 
 test("Deve criar uma senha válida", function () {
 	const senha = new Senha("123456");

@@ -1,4 +1,4 @@
-import Estado from "../src/domain/vo/Estado"
+import Estado from "../../src/domain/vo/Estado"
 
 test("Deve criar um estado válido", function () {
 	const estado = new Estado("SP");

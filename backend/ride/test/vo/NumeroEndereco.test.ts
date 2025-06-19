@@ -1,4 +1,4 @@
-import NumeroEndereco from "../src/domain/vo/NumeroEndereco"
+import NumeroEndereco from "../../src/domain/vo/NumeroEndereco"
 
 test("Deve criar um número de endereço válido", function () {
 	const numeroEndereco = new NumeroEndereco("123");

@@ -75,6 +75,6 @@ export default class Endereco {
 	}
 
 	toString() {
-		return `${this.rua}, ${this.numero}${this.complemento ? ` - ${this.complemento}` : ""}, ${this.bairro}, ${this.cidade} - ${this.estado}, CEP: ${this.cep}`;
+		return `${this.rua}, ${this.numero.getValue()}${this.complemento ? ` - ${this.complemento}` : ""}, ${this.bairro}, ${this.cidade} - ${this.estado.getValue()}, CEP: ${this.cep.getValue()}, Ponto de referência: ${this.pontoReferencia}`;
 	}
 } 

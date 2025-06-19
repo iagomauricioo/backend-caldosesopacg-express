@@ -1,4 +1,4 @@
-import Cep from "../src/domain/vo/Cep"
+import Cep from "../../src/domain/vo/Cep"
 
 test("Deve criar um cep válido", function () {
 	const cep = new Cep("57055-100");

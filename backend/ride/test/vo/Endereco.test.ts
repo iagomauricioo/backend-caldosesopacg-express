@@ -1,19 +1,5 @@
-import Endereco from "../src/domain/entity/Endereco";
-import UUID from "../src/domain/vo/UUID";
-
-/* 
-	private id: number;
-	private clienteId: UUID;
-	private rua: string;
-	private numero: NumeroEndereco;
-	private complemento: string;
-	private bairro: string;
-	private cidade: string;
-	private estado: Estado;
-	private cep: Cep;
-	private pontoReferencia: string;
-	private enderecoPrincipal: boolean;
-*/
+import Endereco from "../../src/domain/entity/Endereco";
+import UUID from "../../src/domain/vo/UUID";
 
 test("Deve criar um endereço válido", function () {
 	const endereco = new Endereco(
@@ -46,4 +32,21 @@ test("Não deve criar um endereço com CEP inválido", function () {
 		"",
 		false
 	)).toThrow(new Error("CEP inválido"));
+});
+
+test("Deve testar o toString", function () {
+	const endereco = new Endereco(
+		0,
+		UUID.create().getValue(),
+		"Rua das Flores",
+		"123",
+		"Apto 45",
+		"Centro",
+		"São Paulo",
+		"SP",
+		"57055-100",
+		"",
+		false
+	);
+	expect(endereco.toString()).toBe("Rua das Flores, 123 - Apto 45, Centro, São Paulo - SP, CEP: 57055-100, Ponto de referência: ");
 });

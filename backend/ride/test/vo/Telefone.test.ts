@@ -1,4 +1,4 @@
-import Telefone from "../src/domain/vo/Telefone"
+import Telefone from "../../src/domain/vo/Telefone"
 
 test("Deve criar um telefone válido", function () {
 	const telefone = new Telefone("82991021732");

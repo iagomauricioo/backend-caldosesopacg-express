@@ -1,4 +1,4 @@
-import Cliente from "../src/domain/entity/Cliente"
+import Cliente from "../../src/domain/entity/Cliente"
 
 test("Deve criar uma conta", function () {
 	const account = Cliente.create("John Doe", "82991021732");
