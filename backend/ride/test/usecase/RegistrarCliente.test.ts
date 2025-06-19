@@ -6,39 +6,19 @@ import RegistrarCliente from "../../src/application/usecase/RegistrarCliente";
 import sinon from "sinon";
 import Cliente from "../../src/domain/entity/Cliente";
 import UUID from "../../src/domain/vo/UUID";
+import Endereco from "../../src/domain/entity/Endereco";
 
 let registrarCliente: RegistrarCliente;
 let buscarCliente: BuscarCliente;
+let endereco: Endereco;
 
 beforeEach(() => {
 	Registry.getInstance().provide("databaseConnection", new PgPromiseAdapter());
 	Registry.getInstance().provide("clienteRepository", new ClienteRepositoryDatabase());
 	registrarCliente = new RegistrarCliente();
 	buscarCliente = new BuscarCliente();
+	endereco = new Endereco(0, UUID.create().getValue(), "Rua das Flores", "123", "Apto 101", "Jardim", "SP", "57055-100", "Próximo ao shopping", true);
 });
-
-/* test("Deve criar um cliente e buscar por telefone", async function () {
-	const telefone = Math.floor(Math.random() * 90000000000) + 10000000000; // Gera telefone de 11 dígitos
-	const input = {
-		nome: "John Doe",
-		telefone: telefone.toString()
-	};
-	const outputRegistrarCliente = await registrarCliente.execute(input);
-	expect(outputRegistrarCliente.clienteId).toBeDefined();
-	const outputBuscarCliente = await buscarCliente.execute(input.telefone);
-	expect(outputBuscarCliente.nome).toBe(input.nome);
-	expect(outputBuscarCliente.telefone).toBe(input.telefone);
-}); */
-
-/* test("Não deve criar um cliente duplicado", async function () {
-	const clienteRepositoryStub = sinon.createStubInstance(ClienteRepositoryDatabase);
-	const input = {
-		nome: "John Doe",
-		telefone: "82991021732"
-	};
-	await registrarCliente.execute(input);
-	await expect(() => registrarCliente.execute(input)).rejects.toThrow(new Error("Cliente já cadastrado"));
-});  */
 
 test("Deve criar um cliente com stub e buscar por telefone", async function () {
 	const clienteRepositoryStub = sinon.createStubInstance(ClienteRepositoryDatabase);
@@ -54,14 +34,15 @@ test("Deve criar um cliente com stub e buscar por telefone", async function () {
 
 	const input = {
 		nome: "John Doe",
-		telefone: "82991021732"
+		telefone: "82991021732",
+		endereco: endereco
 	};
 
 	const outputRegistrarCliente = await registrarCliente.execute(input);
 	expect(outputRegistrarCliente.clienteId).toBeDefined();
 
 	// Agora simula que o cliente existe, para o segundo use case
-	const clienteMock = new Cliente(UUID.create().getValue(), input.nome, input.telefone);
+	const clienteMock = new Cliente(UUID.create().getValue(), input.nome, input.telefone, endereco);
 	clienteRepositoryStub.buscarClientePorTelefone.resolves(clienteMock);
 
 	const outputBuscarCliente = await buscarCliente.execute(input.telefone);
@@ -71,14 +52,15 @@ test("Deve criar um cliente com stub e buscar por telefone", async function () {
 
 test("Não deve criar um cliente duplicado com stub", async function () {
 	const clienteRepositoryStub = sinon.createStubInstance(ClienteRepositoryDatabase);
-	const clienteExistente = new Cliente(UUID.create().getValue(), "John Doe", "82991021732");
+	const clienteExistente = new Cliente(UUID.create().getValue(), "John Doe", "82991021732", endereco);
 	clienteRepositoryStub.buscarClientePorTelefone.resolves(clienteExistente);
 	clienteRepositoryStub.salvarCliente.resolves();
 	Registry.getInstance().provide("clienteRepository", clienteRepositoryStub);
 	const registrarCliente = new RegistrarCliente();
 	const input = {
 		nome: "John Doe",
-		telefone: "82991021732"
+		telefone: "82991021732",
+		endereco: endereco
 	};
 
 	await expect(() => registrarCliente.execute(input)).rejects.toThrow(new Error("Cliente já cadastrado"));

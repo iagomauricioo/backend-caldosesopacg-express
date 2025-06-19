@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "7e22c19c-0df3-4e56-9b43-fe3b28128379",
+		"name": "Caldos da Cynthia",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31637462",
+		"_collection_link": "https://teste9-1520.postman.co/workspace/FastAPI~b182997e-4fad-4276-ad99-8bedf95d1844/collection/31637462-7e22c19c-0df3-4e56-9b43-fe3b28128379?action=share&source=collection_link&creator=31637462"
+	},
+	"item": [
+		{
+			"name": "/clientes/{telefone}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{_base_url}}/clientes/",
+					"host": [
+						"{{_base_url}}"
+					],
+					"path": [
+						"clientes",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/clientes",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"John Doe\",\n  \"telefone\": \"82991021777\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{_base_url}}/clientes",
+					"host": [
+						"{{_base_url}}"
+					],
+					"path": [
+						"clientes"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

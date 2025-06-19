@@ -17,7 +17,7 @@ export class ClienteRepositoryDatabase implements ClienteRepository {
 	async buscarClientePorTelefone (telefone: string) {
 		const [clienteData] = await this.connection?.query("select * from clientes where telefone = $1", [telefone]);
 		if (!clienteData) return;
-		return new Cliente(clienteData.id, clienteData.nome, clienteData.telefone);
+		return new Cliente(clienteData.id, clienteData.nome, clienteData.telefone, clienteData.endereco);
 	}
 	
 	async salvarCliente (cliente: Cliente) {
@@ -26,6 +26,6 @@ export class ClienteRepositoryDatabase implements ClienteRepository {
 	
 	async buscarClientePorId (clienteId: string) {
 		const [clienteData] = await this.connection?.query("select * from clientes where id = $1", [clienteId]);
-		return new Cliente(clienteData.id, clienteData.nome, clienteData.telefone);
+		return new Cliente(clienteData.id, clienteData.nome, clienteData.telefone, clienteData.endereco);
 	}
 }
