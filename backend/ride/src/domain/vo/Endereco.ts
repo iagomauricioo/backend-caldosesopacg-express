@@ -1,25 +1,24 @@
+import Cep from "./Cep";
+import NumeroEndereco from "./NumeroEndereco";
+import Estado from "./Estado";
+
 export default class Endereco {
 	private rua: string;
-	private numero: string;
+	private numero: NumeroEndereco;
 	private complemento: string;
 	private bairro: string;
 	private cidade: string;
-	private estado: string;
-	private cep: string;
+	private estado: Estado;
+	private cep: Cep;
 
 	constructor (rua: string, numero: string, complemento: string, bairro: string, cidade: string, estado: string, cep: string) {
-		if (!this.validarCep(cep)) throw new Error("CEP inválido");
 		this.rua = rua;
-		this.numero = numero;
+		this.numero = new NumeroEndereco(numero);
 		this.complemento = complemento;
 		this.bairro = bairro;
 		this.cidade = cidade;
-		this.estado = estado;
-		this.cep = cep;
-	}
-
-	validarCep(cep: string): boolean {
-		return cep.replace(/\D/g, "").length === 8;
+		this.estado = new Estado(estado);
+		this.cep = new Cep(cep);
 	}
 
 	getRua() {
