@@ -30,6 +30,16 @@ beforeEach(() => {
 	expect(outputBuscarCliente.telefone).toBe(input.telefone);
 }); */
 
+/* test("Não deve criar um cliente duplicado", async function () {
+	const clienteRepositoryStub = sinon.createStubInstance(ClienteRepositoryDatabase);
+	const input = {
+		nome: "John Doe",
+		telefone: "82991021732"
+	};
+	await registrarCliente.execute(input);
+	await expect(() => registrarCliente.execute(input)).rejects.toThrow(new Error("Cliente já cadastrado"));
+});  */
+
 test("Deve criar um cliente com stub e buscar por telefone", async function () {
 	const clienteRepositoryStub = sinon.createStubInstance(ClienteRepositoryDatabase);
 
@@ -73,16 +83,6 @@ test("Não deve criar um cliente duplicado com stub", async function () {
 
 	await expect(() => registrarCliente.execute(input)).rejects.toThrow(new Error("Cliente já cadastrado"));
 });
-
-/* test("Não deve criar um cliente duplicado", async function () {
-	const clienteRepositoryStub = sinon.createStubInstance(ClienteRepositoryDatabase);
-	const input = {
-		nome: "John Doe",
-		telefone: "82991021732"
-	};
-	await registrarCliente.execute(input);
-	await expect(() => registrarCliente.execute(input)).rejects.toThrow(new Error("Cliente já cadastrado"));
-});  */
 
 afterEach(async () => {
 	const connection = Registry.getInstance().inject("databaseConnection");
