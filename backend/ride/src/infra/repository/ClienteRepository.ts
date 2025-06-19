@@ -6,7 +6,7 @@ import DatabaseConnection from "../database/DatabaseConnection";
 export default interface ClienteRepository {
 	buscarClientePorTelefone (telefone: string): Promise<Cliente | undefined>;
 	buscarClientePorId (clienteId: string): Promise<Cliente>;
-	salvarCliente (cliente: Cliente): Promise<void>;
+	salvarCliente (cliente: Cliente): Promise<{ id: string }>;
 }
 
 // Adapter
@@ -21,7 +21,8 @@ export class ClienteRepositoryDatabase implements ClienteRepository {
 	}
 	
 	async salvarCliente (cliente: Cliente) {
-		await this.connection?.query("insert into clientes (id, nome, telefone) values ($1, $2, $3)", [cliente.getClienteId(), cliente.getNome(), cliente.getTelefone()]);
+		const [result] = await this.connection?.query("insert into clientes (id, nome, telefone) values ($1, $2, $3) returning id", [cliente.getClienteId(), cliente.getNome(), cliente.getTelefone()]);
+		return { id: result.id };
 	}
 	
 	async buscarClientePorId (clienteId: string) {

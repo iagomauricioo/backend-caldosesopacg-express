@@ -13,15 +13,13 @@ export default class RegistrarCliente {
 	async execute (input: RegistrarClienteInput) {
 		const clienteData = await this.clienteRepository?.buscarClientePorTelefone(input.telefone);
 		if (clienteData) throw new Error("Cliente já cadastrado");
-		
-		// Cria o cliente sem endereço inicialmente
 		const cliente = Cliente.create(input.nome, input.telefone);
-		await this.clienteRepository?.salvarCliente(cliente);
-		
+		const clienteSalvo = await this.clienteRepository?.salvarCliente(cliente);
+		if (!clienteSalvo) throw new Error("Erro ao salvar cliente");
 		if (input.endereco) {
 			const endereco = new Endereco(
 				0,
-				cliente.getClienteId(),
+				clienteSalvo.id,
 				input.endereco.getRua(),
 				input.endereco.getNumero().getValue(),
 				input.endereco.getComplemento() || "",
@@ -34,7 +32,10 @@ export default class RegistrarCliente {
 		}
 		
 		return {
-			clienteId: cliente.getClienteId()
+			clienteId: clienteSalvo.id,
+			nome: cliente.getNome(),
+			telefone: cliente.getTelefone(),
+			enderecoCadastrado: !!input.endereco
 		};
 	}
 }
@@ -42,5 +43,5 @@ export default class RegistrarCliente {
 type RegistrarClienteInput = {
 	nome: string;
 	telefone: string;
-	endereco: Endereco;
+	endereco?: Endereco; // Endereço opcional
 }

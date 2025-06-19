@@ -28,7 +28,7 @@ test("Deve criar um cliente com stub e buscar por telefone", async function () {
 
 	// Primeiro, simula que o cliente não existe
 	clienteRepositoryStub.buscarClientePorTelefone.resolves(undefined);
-	clienteRepositoryStub.salvarCliente.resolves();
+	clienteRepositoryStub.salvarCliente.resolves({ id: UUID.create().getValue() });
 	enderecoRepositoryStub.salvarEndereco.resolves();
 
 	Registry.getInstance().provide("clienteRepository", clienteRepositoryStub);
@@ -61,7 +61,7 @@ test("Não deve criar um cliente duplicado com stub", async function () {
 	
 	const clienteExistente = new Cliente(UUID.create().getValue(), "John Doe", "82991021732", endereco);
 	clienteRepositoryStub.buscarClientePorTelefone.resolves(clienteExistente);
-	clienteRepositoryStub.salvarCliente.resolves();
+	clienteRepositoryStub.salvarCliente.resolves({ id: UUID.create().getValue() });
 	enderecoRepositoryStub.salvarEndereco.resolves();
 	
 	Registry.getInstance().provide("clienteRepository", clienteRepositoryStub);
