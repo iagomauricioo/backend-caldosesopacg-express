@@ -1,5 +1,5 @@
 import { inject } from "../../infra/di/DI";
-import ClienteRepository from "../../infra/repository/ClienteRepository";
+import ClienteRepository from "../../infra/repository/Cliente.repository";
 
 export default class BuscarCliente {
 	@inject("clienteRepository")

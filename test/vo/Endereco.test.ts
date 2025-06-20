@@ -44,3 +44,41 @@ test("Deve testar o toString", function () {
 	);
 	expect(endereco.toString()).toBe("Rua das Flores, 123 - Apto 45, Centro, CEP: 57055-100, Ponto de referência: ");
 });
+
+test("Deve converter endereço para JSON", function () {
+	const clienteId = UUID.create().getValue();
+	const endereco = new Endereco(42, clienteId, "Rua das Flores", "123", "Apto 403", "Centro", "12345-678", "uninassau", true);
+	
+	const json = endereco.toJSON();
+	
+	expect(json).toEqual({
+		id: 42,
+		clienteId: clienteId,
+		rua: "Rua das Flores",
+		numero: "123",
+		complemento: "Apto 403",
+		bairro: "Centro",
+		cep: "12345-678",
+		pontoReferencia: "uninassau",
+		enderecoPrincipal: true
+	});
+});
+
+test("Deve converter endereço para JSON sem complemento", function () {
+	const clienteId = UUID.create().getValue();
+	const endereco = new Endereco(42, clienteId, "Rua das Flores", "123", "", "Centro", "12345-678", "uninassau", false);
+	
+	const json = endereco.toJSON();
+	
+	expect(json).toEqual({
+		id: 42,
+		clienteId: clienteId,
+		rua: "Rua das Flores",
+		numero: "123",
+		complemento: "",
+		bairro: "Centro",
+		cep: "12345-678",
+		pontoReferencia: "uninassau",
+		enderecoPrincipal: false
+	});
+});

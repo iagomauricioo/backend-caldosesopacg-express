@@ -9,8 +9,9 @@ export default class EnderecoController {
   enderecoService?: EnderecoService;
 
   constructor() {
-    this.httpServer?.register("post", "/clientes/:clienteId/endereco", async (params: any, body: any) => {
-      
+    this.httpServer?.register("get", "/clientes/:telefone/endereco", async (params: any, body: any) => {
+      const endereco = await this.enderecoService?.buscarEnderecoPorTelefoneDoCliente(params.telefone);
+      return endereco;
     });
   }
 } 

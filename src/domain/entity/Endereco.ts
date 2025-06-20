@@ -68,4 +68,18 @@ export default class Endereco {
 	toString() {
 		return `${this.rua}, ${this.numero.getValue()}${this.complemento ? ` - ${this.complemento}` : ""}, ${this.bairro}, CEP: ${this.cep.getValue()}, Ponto de referência: ${this.pontoReferencia}`;
 	}
+
+	toJSON() {
+		return {
+			id: this.id,
+			clienteId: this.clienteId.getValue(),
+			rua: this.rua,
+			numero: this.numero.getValue(),
+			complemento: this.complemento,
+			bairro: this.bairro,
+			cep: this.cep.getValue(),
+			pontoReferencia: this.pontoReferencia,
+			enderecoPrincipal: this.enderecoPrincipal
+		};
+	}
 } 

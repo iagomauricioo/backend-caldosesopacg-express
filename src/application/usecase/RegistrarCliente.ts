@@ -1,4 +1,4 @@
-import ClienteRepository from "../../infra/repository/ClienteRepository";
+import ClienteRepository from "../../infra/repository/Cliente.repository";
 import Cliente from "../../domain/entity/Cliente";
 import { inject } from "../../infra/di/DI";
 import EnderecoService from "../../domain/service/Endereco.service";

@@ -1,4 +1,4 @@
-import { ClienteRepositoryDatabase } from "../../src/infra/repository/ClienteRepository";
+import { ClienteRepositoryDatabase } from "../../src/infra/repository/Cliente.repository";
 import { PgPromiseAdapter } from "../../src/infra/database/DatabaseConnection";
 import { Registry } from "../../src/infra/di/DI";
 import BuscarCliente from "../../src/application/usecase/BuscarCliente";
@@ -7,7 +7,7 @@ import sinon from "sinon";
 import Cliente from "../../src/domain/entity/Cliente";
 import UUID from "../../src/domain/vo/UUID";
 import Endereco from "../../src/domain/entity/Endereco";
-import { EnderecoRepositoryDatabase } from "../../src/infra/repository/EnderecoRepository";
+import { EnderecoRepositoryDatabase } from "../../src/infra/repository/Endereco.repository";
 import EnderecoService from "../../src/domain/service/Endereco.service";
 
 let registrarCliente: RegistrarCliente;
