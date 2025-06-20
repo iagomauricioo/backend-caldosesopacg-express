@@ -25,6 +25,10 @@ export default class Endereco {
 		this.enderecoPrincipal = enderecoPrincipal;
 	}
 
+	static create (clienteId: string, rua: string, numero: string, complemento: string, bairro: string, cep: string, pontoReferencia: string, enderecoPrincipal: boolean) {
+		return new Endereco(0, clienteId, rua, numero, complemento, bairro, cep, pontoReferencia, enderecoPrincipal);
+	}
+
 	getId() {
 		return this.id;
 	}

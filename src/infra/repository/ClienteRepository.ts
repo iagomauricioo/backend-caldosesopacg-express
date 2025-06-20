@@ -1,6 +1,7 @@
 import Cliente from "../../domain/entity/Cliente";
 import { inject } from "../di/DI";
 import DatabaseConnection from "../database/DatabaseConnection";
+import Logger from "../logger/logger";
 
 // Port
 export default interface ClienteRepository {
@@ -15,13 +16,19 @@ export class ClienteRepositoryDatabase implements ClienteRepository {
 	connection?: DatabaseConnection;
 
 	async buscarClientePorTelefone (telefone: string) {
-		const [clienteData] = await this.connection?.query("select * from clientes where telefone = $1", [telefone]);
+		const query = "select * from clientes where telefone = $1";
+		const params = [telefone];
+		Logger.getInstance().debug("SQL Query", { query, params });
+		const [clienteData] = await this.connection?.query(query, params);
 		if (!clienteData) return;
 		return new Cliente(clienteData.id, clienteData.nome, clienteData.telefone, clienteData.endereco);
 	}
 	
 	async salvarCliente (cliente: Cliente) {
-		const [result] = await this.connection?.query("insert into clientes (id, nome, telefone) values ($1, $2, $3) returning id", [cliente.getClienteId(), cliente.getNome(), cliente.getTelefone()]);
+		const query = "insert into clientes (id, nome, telefone) values ($1, $2, $3) returning id, nome, telefone";
+		const params = [cliente.getClienteId(), cliente.getNome(), cliente.getTelefone()];
+		Logger.getInstance().debug("SQL Query", { query, params });
+		const [result] = await this.connection?.query(query, params);
 		return { id: result.id };
 	}
 	
