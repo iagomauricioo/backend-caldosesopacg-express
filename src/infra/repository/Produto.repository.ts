@@ -1,4 +1,4 @@
-import Produto from "../../domain/entity/Produto.entity";
+import Produto, { VariacaoProduto } from "../../domain/entity/Produto.entity";
 import { inject } from "../di/DI";
 import DatabaseConnection from "../database/DatabaseConnection";
 import Logger from "../logger/logger";
@@ -30,12 +30,38 @@ export class ProdutoRepositoryDatabase implements ProdutoRepository {
   }
 
   async buscarProdutos(): Promise<Produto[]> {
-    const query = `select p.nome, p.descricao, p.disponivel, p.ordem_exibicao, v.tamanho_ml, v.nome_tamanho, v.preco_centavos from produtos p  inner join variacoes_produto v  on p.id = v.produto_id order by p.ordem_exibicao`;
+    const query = `
+      SELECT 
+        p.id,
+        p.nome,
+        p.descricao,
+        p.disponivel,
+        p.ordem_exibicao,
+        json_agg(json_build_object(
+          'tamanho_ml', v.tamanho_ml,
+          'nome_tamanho', v.nome_tamanho,
+          'preco_centavos', v.preco_centavos
+        )) AS variacoes
+      FROM produtos p
+      JOIN variacoes_produto v ON v.produto_id = p.id
+      GROUP BY p.id
+      ORDER BY p.ordem_exibicao
+    `;
     Logger.getInstance().debug("SQL Query", { query });
     const produtosData = await this.connection?.query(query, []);
     if (!produtosData) throw new Error("Não foi possível buscar os produtos");
-    return produtosData.map((produtoData: any) => new Produto(produtoData.id, produtoData.nome, produtoData.descricao, produtoData.disponivel, produtoData.ordem_exibicao, produtoData.tamanho_ml, produtoData.nome_tamanho, produtoData.preco_centavos)
-    );
+    
+    return produtosData.map((produtoData: any) => {
+      const variacoes: VariacaoProduto[] = produtoData.variacoes || [];
+      return new Produto(
+        produtoData.id, 
+        produtoData.nome, 
+        produtoData.descricao, 
+        produtoData.disponivel, 
+        produtoData.ordem_exibicao, 
+        variacoes
+      );
+    });
   }
 
   buscarProdutosPorNome(nome: string): Promise<Produto[]> {

@@ -1,14 +1,18 @@
+export interface VariacaoProduto {
+  tamanho_ml: number;
+  nome_tamanho: string;
+  preco_centavos: number;
+}
+
 export default class Produto {
   private id: number;
   private nome: string;
   private descricao: string;
   private disponivel: boolean;
   private ordem_exibicao: number;
-  private tamanho_ml: number;
-  private nome_tamanho: string;
-  private preco_centavos: number;
+  private variacoes: VariacaoProduto[];
   
-  constructor(id: number, nome: string, descricao: string, disponivel: boolean, ordem_exibicao: number, tamanho_ml: number, nome_tamanho: string, preco_centavos: number) {
+  constructor(id: number, nome: string, descricao: string, disponivel: boolean, ordem_exibicao: number, variacoes: VariacaoProduto[] = []) {
     this.id = id;
     if (!nome) {
       throw new Error("Nome inválido");
@@ -20,13 +24,21 @@ export default class Produto {
     this.descricao = descricao;
     this.disponivel = disponivel;
     this.ordem_exibicao = ordem_exibicao;
-    this.tamanho_ml = tamanho_ml;
-    this.nome_tamanho = nome_tamanho;
-    this.preco_centavos = preco_centavos;
+    this.variacoes = variacoes;
   }
 
-  static create(nome: string, descricao: string, disponivel: boolean, ordem_exibicao: number, tamanho_ml: number, nome_tamanho: string, preco_centavos: number) {
-    return new Produto(0, nome, descricao, disponivel, ordem_exibicao, tamanho_ml, nome_tamanho, preco_centavos);
+  static create(nome: string, descricao: string, disponivel: boolean, ordem_exibicao: number, variacoes: VariacaoProduto[] = []) {
+    return new Produto(0, nome, descricao, disponivel, ordem_exibicao, variacoes);
+  }
+
+  // Método para compatibilidade com a versão anterior
+  static createComVariacaoUnica(nome: string, descricao: string, disponivel: boolean, ordem_exibicao: number, tamanho_ml: number, nome_tamanho: string, preco_centavos: number) {
+    const variacao: VariacaoProduto = {
+      tamanho_ml,
+      nome_tamanho,
+      preco_centavos
+    };
+    return new Produto(0, nome, descricao, disponivel, ordem_exibicao, [variacao]);
   }
 
   getId() {
@@ -49,16 +61,21 @@ export default class Produto {
     return this.ordem_exibicao;
   }
 
+  getVariacoes() {
+    return this.variacoes;
+  }
+
+  // Métodos para compatibilidade com a versão anterior
   getTamanhoMl() {
-    return this.tamanho_ml;
+    return this.variacoes.length > 0 ? this.variacoes[0].tamanho_ml : 0;
   }
 
   getNomeTamanho() {
-    return this.nome_tamanho;
+    return this.variacoes.length > 0 ? this.variacoes[0].nome_tamanho : '';
   }
 
   getPrecoCentavos() {
-    return this.preco_centavos;
+    return this.variacoes.length > 0 ? this.variacoes[0].preco_centavos : 0;
   }
 
   toJSON() {
@@ -68,9 +85,7 @@ export default class Produto {
       descricao: this.descricao,
       disponivel: this.disponivel,
       ordem_exibicao: this.ordem_exibicao,
-      tamanho_ml: this.tamanho_ml,
-      nome_tamanho: this.nome_tamanho,
-      preco_centavos: this.preco_centavos
+      variacoes: this.variacoes
     };
   }
 
