@@ -1,7 +1,7 @@
 import ClienteRepository from "../../infra/repository/Cliente.repository";
-import Cliente from "../../domain/entity/Cliente";
+import Cliente from "../../domain/entity/Cliente.entity";
 import { inject } from "../../infra/di/DI";
-import Endereco from "../../domain/entity/Endereco";
+import Endereco from "../../domain/entity/Endereco.entity";
 import EnderecoRepository from "../../infra/repository/Endereco.repository";
 
 export default class RegistrarCliente {

@@ -1,5 +1,5 @@
-import Cliente from "../../src/domain/entity/Cliente"
-import Endereco from "../../src/domain/entity/Endereco";
+import Cliente from "../../src/domain/entity/Cliente.entity"
+import Endereco from "../../src/domain/entity/Endereco.entity";
 import UUID from "../../src/domain/vo/UUID";
 
 let endereco: Endereco;

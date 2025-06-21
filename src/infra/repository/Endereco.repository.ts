@@ -1,6 +1,6 @@
 import { inject } from "../di/DI";
 import DatabaseConnection from "../database/DatabaseConnection";
-import Endereco from "../../domain/entity/Endereco";
+import Endereco from "../../domain/entity/Endereco.entity";
 import Logger from "../logger/logger";
 
 // Port

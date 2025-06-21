@@ -8,6 +8,9 @@ import RegistrarCliente from "./application/usecase/RegistrarCliente";
 import { EnderecoRepositoryDatabase } from "./infra/repository/Endereco.repository";
 import EnderecoController from "./infra/controller/Endereco.controller";
 import Logger from "./infra/logger/logger";
+import ProdutoController from "./infra/controller/Produto.controller";
+import { ProdutoRepositoryDatabase } from "./infra/repository/Produto.repository";
+import ListarProdutosDisponiveis from "./application/usecase/ListarProdutos";
 
 // Configurar logger para exibir SQL
 Logger.getInstance().setLevel("debug");
@@ -21,13 +24,16 @@ Registry.getInstance().provide("databaseConnection", new PgPromiseAdapter());
 // Repository
 Registry.getInstance().provide("clienteRepository", new ClienteRepositoryDatabase());
 Registry.getInstance().provide("enderecoRepository", new EnderecoRepositoryDatabase());
+Registry.getInstance().provide("produtoRepository", new ProdutoRepositoryDatabase());
 
 // Usecase
 Registry.getInstance().provide("buscarCliente", new BuscarCliente());
 Registry.getInstance().provide("registrarCliente", new RegistrarCliente());
+Registry.getInstance().provide("listarProdutosDisponiveis", new ListarProdutosDisponiveis());
 
 // Controller
 Registry.getInstance().provide("clienteController", new ClienteController());
 Registry.getInstance().provide("enderecoController", new EnderecoController());
+Registry.getInstance().provide("produtoController", new ProdutoController());
 
 httpServer.listen(3000);

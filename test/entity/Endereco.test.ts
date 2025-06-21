@@ -1,4 +1,4 @@
-import Endereco from "../../src/domain/entity/Endereco";
+import Endereco from "../../src/domain/entity/Endereco.entity";
 import UUID from "../../src/domain/vo/UUID";
 
 test("Deve criar um endereço válido", function () {

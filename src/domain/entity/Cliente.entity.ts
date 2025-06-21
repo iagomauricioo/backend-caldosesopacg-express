@@ -1,7 +1,7 @@
 import Nome from "../vo/Nome";
 import Telefone from "../vo/Telefone";
 import UUID from "../vo/UUID";
-import Endereco from "./Endereco";
+import Endereco from "./Endereco.entity";
 
 export default class Cliente {
 	private clienteId: UUID;

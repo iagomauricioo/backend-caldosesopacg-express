@@ -4,9 +4,9 @@ import { Registry } from "../../src/infra/di/DI";
 import BuscarCliente from "../../src/application/usecase/BuscarCliente";
 import RegistrarCliente from "../../src/application/usecase/RegistrarCliente";
 import sinon from "sinon";
-import Cliente from "../../src/domain/entity/Cliente";
+import Cliente from "../../src/domain/entity/Cliente.entity";
 import UUID from "../../src/domain/vo/UUID";
-import Endereco from "../../src/domain/entity/Endereco";
+import Endereco from "../../src/domain/entity/Endereco.entity";
 import { EnderecoRepositoryDatabase } from "../../src/infra/repository/Endereco.repository";
 
 let registrarCliente: RegistrarCliente;
