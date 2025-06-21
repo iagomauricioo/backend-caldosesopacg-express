@@ -37,3 +37,21 @@ export class ClienteRepositoryDatabase implements ClienteRepository {
 		return new Cliente(clienteData.id, clienteData.nome, clienteData.telefone, clienteData.endereco);
 	}
 }
+
+export class ClienteRepositoryMemory implements ClienteRepository {
+	private clientes: Cliente[] = [];
+
+	buscarClientePorTelefone(telefone: string): Promise<Cliente | undefined> {
+		return Promise.resolve(this.clientes.find(cliente => cliente.getTelefone() === telefone));
+	}
+	buscarClientePorId(clienteId: string): Promise<Cliente> {
+		const cliente = this.clientes.find(cliente => cliente.getClienteId() === clienteId);
+		if (!cliente) throw new Error("Cliente não encontrado");
+		return Promise.resolve(cliente);
+	}
+	salvarCliente(cliente: Cliente): Promise<{ id: string; }> {
+		this.clientes.push(cliente);
+		return Promise.resolve({ id: cliente.getClienteId() });
+	}
+	
+}

@@ -9,7 +9,7 @@ export default class Logger {
 	debug (message: string, data: any) {
 		const levels = this.levels.slice(this.levels.indexOf(this.level));
 		if (levels.includes("debug")) {
-			console.log("DEBUG", message, data);
+			console.log("DEBUG [" + new Date().toISOString() + "]", message, data);
 		}
 	}
 

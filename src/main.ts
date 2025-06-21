@@ -11,6 +11,9 @@ import Logger from "./infra/logger/logger";
 import ProdutoController from "./infra/controller/Produto.controller";
 import { ProdutoRepositoryDatabase } from "./infra/repository/Produto.repository";
 import ListarProdutosDisponiveis from "./application/usecase/ListarProdutos";
+import CepController from "./infra/controller/Cep.controller";
+import BuscarCep from "./application/usecase/BuscarCep";
+import CepService from "./domain/service/Cep.service";
 
 // Configurar logger para exibir SQL
 Logger.getInstance().setLevel("debug");
@@ -30,10 +33,15 @@ Registry.getInstance().provide("produtoRepository", new ProdutoRepositoryDatabas
 Registry.getInstance().provide("buscarCliente", new BuscarCliente());
 Registry.getInstance().provide("registrarCliente", new RegistrarCliente());
 Registry.getInstance().provide("listarProdutosDisponiveis", new ListarProdutosDisponiveis());
+Registry.getInstance().provide("buscarCep", new BuscarCep());
+
+// Service
+Registry.getInstance().provide("cepService", new CepService());
 
 // Controller
 Registry.getInstance().provide("clienteController", new ClienteController());
 Registry.getInstance().provide("enderecoController", new EnderecoController());
 Registry.getInstance().provide("produtoController", new ProdutoController());
+Registry.getInstance().provide("cepController", new CepController());
 
 httpServer.listen(3000);

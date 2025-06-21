@@ -23,7 +23,7 @@ test("Deve criar um cliente", async function () {
       cep: "12345-678",
     },
   };
-  const response = await axios.post("http://localhost:3000/clientes", input);
+  const response = await axios.post("http://localhost:3000/api/v1/clientes", input);
   expect(response.status).toBe(200);
   expect(response.data.clienteId).toBeDefined();
   expect(response.data.nome).toBe(input.nome);

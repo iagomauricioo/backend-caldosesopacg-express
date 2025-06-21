@@ -8,15 +8,20 @@ export default interface HttpServer {
 
 export class ExpressAdapter implements HttpServer {
 	app: any;
+	router: any;
 
 	constructor () {
 		this.app = express();
+		this.router = express.Router();
 		this.app.use(express.json());
 		this.app.use(cors());
+		
+		// Adiciona o prefixo /api/v1 para todas as rotas
+		this.app.use('/api/v1', this.router);
 	}
 
 	register(method: string, url: string, callback: Function): void {
-		this.app[method](url, async function (req: any, res: any) {
+		this.router[method](url, async function (req: any, res: any) {
 			try {
 				const output = await callback(req.params, req.body);
 				res.json(output);
@@ -30,7 +35,7 @@ export class ExpressAdapter implements HttpServer {
 	listen(port: number): void {
 		const server = this.app.listen(port, () => {
 			console.log(`🚀 Servidor rodando na porta ${port}`);
-			console.log(`📡 API disponível em: http://localhost:${port}`);
+			console.log(`📡 API disponível em: http://localhost:${port}/api/v1`);
 			console.log(`⏰ Iniciado em: ${new Date().toLocaleString('pt-BR')}`);
 		});
 		

@@ -24,7 +24,7 @@ export class EnderecoRepositoryDatabase implements EnderecoRepository {
         return new Endereco(enderecoData.id, enderecoData.cliente_id, enderecoData.rua, enderecoData.numero, enderecoData.complemento, enderecoData.bairro, enderecoData.cep, enderecoData.ponto_referencia, enderecoData.endereco_principal);
 	}
 
-	async buscarEnderecoPorTelefoneDoCliente(telefone: string) {
+	async buscarEnderecoPorTelefoneDoCliente (telefone: string) {
 		const query = "select * from enderecos_cliente where cliente_id = (select id from clientes where telefone = $1)";
 		const params = [telefone];
 		Logger.getInstance().debug("SQL Query", { query, params });
@@ -38,5 +38,20 @@ export class EnderecoRepositoryDatabase implements EnderecoRepository {
         const params = [endereco.getClienteId(), endereco.getRua(), endereco.getNumero().getValue(), endereco.getComplemento(), endereco.getBairro(), endereco.getCep().getValue(), endereco.getPontoReferencia(), endereco.getEnderecoPrincipal()];
         Logger.getInstance().debug("SQL Query", { query, params });
         await this.connection?.query(query, params);
+	}
+}
+
+export class EnderecoRepositoryMemory implements EnderecoRepository {
+	private enderecos: Endereco[] = [];
+	
+	buscarEnderecoPorClienteId(clienteId: string): Promise<Endereco | undefined> {
+		return Promise.resolve(this.enderecos.find(endereco => endereco.getClienteId() === clienteId));
+	}
+	buscarEnderecoPorTelefoneDoCliente(telefone: string): Promise<Endereco | undefined> {
+		throw new Error("Method not implemented.");
+	}
+	salvarEndereco(endereco: Endereco): Promise<void> {
+		this.enderecos.push(endereco);
+		return Promise.resolve();
 	}
 }
