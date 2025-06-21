@@ -1,27 +1,25 @@
 import ClienteRepository from "../../infra/repository/Cliente.repository";
 import Cliente from "../../domain/entity/Cliente";
 import { inject } from "../../infra/di/DI";
-import EnderecoService from "../../domain/service/Endereco.service";
 import Endereco from "../../domain/entity/Endereco";
+import EnderecoRepository from "../../infra/repository/Endereco.repository";
 
 export default class RegistrarCliente {
   @inject("clienteRepository")
   clienteRepository?: ClienteRepository;
-  @inject("enderecoService")
-  enderecoService?: EnderecoService;
+  @inject("enderecoRepository")
+  enderecoRepository?: EnderecoRepository;
 
   async execute(input: RegistrarClienteInput) {
     const clienteExiste = await this.clienteRepository?.buscarClientePorTelefone(input.telefone);
     if (clienteExiste) throw new Error("Cliente já cadastrado");
-    
     const cliente = Cliente.create(input.nome, input.telefone);
     const clienteSalvo = await this.clienteRepository?.salvarCliente(cliente);
     if (!clienteSalvo) throw new Error("Erro ao salvar cliente");
     if (input.endereco) {
       const endereco = Endereco.create(clienteSalvo.id, input.endereco.rua, input.endereco.numero, input.endereco.complemento || "", input.endereco.bairro, input.endereco.cep, input.endereco.pontoReferencia || "", input.endereco.enderecoPrincipal || true);
-      await this.enderecoService?.salvarEnderecoPorTelefoneDoCliente(input.telefone, endereco);
+      await this.enderecoRepository?.salvarEndereco(endereco);
     }
-
     return {
       clienteId: clienteSalvo.id,
       nome: cliente.getNome(),

@@ -7,7 +7,6 @@ import BuscarCliente from "./application/usecase/BuscarCliente";
 import RegistrarCliente from "./application/usecase/RegistrarCliente";
 import { EnderecoRepositoryDatabase } from "./infra/repository/Endereco.repository";
 import EnderecoController from "./infra/controller/Endereco.controller";
-import EnderecoService from "./domain/service/Endereco.service";
 import Logger from "./infra/logger/logger";
 
 // Configurar logger para exibir SQL
@@ -30,8 +29,5 @@ Registry.getInstance().provide("registrarCliente", new RegistrarCliente());
 // Controller
 Registry.getInstance().provide("clienteController", new ClienteController());
 Registry.getInstance().provide("enderecoController", new EnderecoController());
-
-// Service
-Registry.getInstance().provide("enderecoService", new EnderecoService());
 
 httpServer.listen(3000);

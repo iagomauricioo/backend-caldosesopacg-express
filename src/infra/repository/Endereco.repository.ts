@@ -16,7 +16,7 @@ export class EnderecoRepositoryDatabase implements EnderecoRepository {
 	connection?: DatabaseConnection;
 
 	async buscarEnderecoPorClienteId (clienteId: string) {
-		const query = "select * from enderecos_cliente where cliente_id = $1";
+		const query = "select ec.id, ec.cliente_id, ec.rua, ec.numero, ec.complemento, ec.bairro, ec.cep, ec.ponto_referencia, ec.endereco_principal from enderecos_cliente ec inner join clientes c on ec.cliente_id  = c.id where c.id = $1";
 		const params = [clienteId];
 		Logger.getInstance().debug("SQL Query", { query, params });
 		const [enderecoData] = await this.connection?.query(query, params);
