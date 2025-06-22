@@ -1,7 +1,7 @@
 import Produto, { VariacaoProduto } from "../../domain/entity/Produto.entity";
 import { inject } from "../di/DI";
 import DatabaseConnection from "../database/DatabaseConnection";
-import Logger from "../logger/logger";
+import Logger from "../logger/Logger";
 
 export default interface ProdutoRepository {
   salvarProduto(produto: Produto): Promise<void>;

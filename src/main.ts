@@ -7,7 +7,7 @@ import BuscarCliente from "./application/usecase/BuscarCliente";
 import RegistrarCliente from "./application/usecase/RegistrarCliente";
 import { EnderecoRepositoryDatabase } from "./infra/repository/Endereco.repository";
 import EnderecoController from "./infra/controller/Endereco.controller";
-import Logger from "./infra/logger/logger";
+import Logger from "./infra/logger/Logger";
 import ProdutoController from "./infra/controller/Produto.controller";
 import { ProdutoRepositoryDatabase } from "./infra/repository/Produto.repository";
 import ListarProdutosDisponiveis from "./application/usecase/ListarProdutos";

@@ -143,6 +143,43 @@ CREATE TABLE configuracoes (
     data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabela de pagamentos
+CREATE TABLE pagamentos (
+    id SERIAL PRIMARY KEY,
+    pedido_id INTEGER REFERENCES pedidos(id) ON DELETE CASCADE,
+    
+    -- Dados da ASAAS
+    asaas_payment_id VARCHAR(100) UNIQUE,
+    asaas_customer_id VARCHAR(100), -- ID do cliente na ASAAS
+    
+    -- Dados do pagamento
+    tipo_pagamento VARCHAR(20) NOT NULL CHECK (tipo_pagamento IN ('pix', 'dinheiro', 'cartao_credito', 'cartao_debito')),
+    valor_centavos INTEGER NOT NULL,
+    
+    -- Status do pagamento
+    status VARCHAR(20) DEFAULT 'pendente' CHECK (status IN ('pendente', 'aprovado', 'rejeitado', 'cancelado', 'expirado')),
+    
+    -- Dados específicos do PIX
+    pix_qr_code_imagem TEXT, -- Base64 da imagem
+    pix_copia_e_cola TEXT, -- String PIX para copiar
+    
+    -- Controle de datas
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    data_aprovacao TIMESTAMP,
+    data_expiracao TIMESTAMP,
+    data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Dados extras
+    observacoes TEXT,
+    webhook_processado BOOLEAN DEFAULT false
+);
+
+CREATE INDEX idx_pagamentos_pedido ON pagamentos(pedido_id);
+CREATE INDEX idx_pagamentos_asaas_id ON pagamentos(asaas_payment_id);
+CREATE INDEX idx_pagamentos_status ON pagamentos(status);
+CREATE INDEX idx_pagamentos_tipo ON pagamentos(tipo_pagamento);
+CREATE INDEX idx_pagamentos_data_criacao ON pagamentos(data_criacao);
+
 -- Inserindo dados iniciais
 
 -- Categorias

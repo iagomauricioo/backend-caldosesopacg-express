@@ -1,7 +1,7 @@
 import Cliente from "../../domain/entity/Cliente.entity";
 import { inject } from "../di/DI";
 import DatabaseConnection from "../database/DatabaseConnection";
-import Logger from "../logger/logger";
+import Logger from "../logger/Logger";
 
 // Port
 export default interface ClienteRepository {

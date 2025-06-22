@@ -15,8 +15,7 @@ export class ExpressAdapter implements HttpServer {
 		this.router = express.Router();
 		this.app.use(express.json());
 		this.app.use(cors());
-		
-		// Adiciona o prefixo /api/v1 para todas as rotas
+
 		this.app.use('/api/v1', this.router);
 	}
 
