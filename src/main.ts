@@ -13,14 +13,21 @@ import { ProdutoRepositoryDatabase } from "./infra/repository/Produto.repository
 import ListarProdutosDisponiveis from "./application/usecase/ListarProdutos";
 import CepController from "./infra/controller/Cep.controller";
 import BuscarCep from "./application/usecase/BuscarCep";
-import CepService from "./domain/service/Cep.service";
 import RegistrarClienteNoAsaas from "./application/usecase/RegistrarClienteNoAsaas";
 import { AsaasGatewayHttp } from "./infra/gateway/Asaas.gateway";
+import BrasilApiGateway from "./infra/gateway/BrasilApi.gateway";
+import CobrancaController from "./infra/controller/Cobranca.controller";
+import GerarCobranca from "./application/usecase/GerarCobranca";
+import BuscarQrCodePix from "./application/usecase/BuscarQrCodePix";
 
 // Configurar logger para exibir SQL
 Logger.getInstance().setLevel("debug");
 
 const httpServer = new ExpressAdapter();
+
+// Gateway
+Registry.getInstance().provide("asaasGateway", new AsaasGatewayHttp());
+Registry.getInstance().provide("brasilApiGateway", new BrasilApiGateway());
 
 //Infra
 Registry.getInstance().provide("httpServer", httpServer);
@@ -37,15 +44,14 @@ Registry.getInstance().provide("registrarCliente", new RegistrarCliente());
 Registry.getInstance().provide("listarProdutosDisponiveis", new ListarProdutosDisponiveis());
 Registry.getInstance().provide("buscarCep", new BuscarCep());
 Registry.getInstance().provide("registrarClienteNoAsaas", new RegistrarClienteNoAsaas());
-Registry.getInstance().provide("asaasGateway", new AsaasGatewayHttp());
-
-// Service
-Registry.getInstance().provide("cepService", new CepService());
+Registry.getInstance().provide("gerarCobranca", new GerarCobranca());
+Registry.getInstance().provide("buscarQrCodePix", new BuscarQrCodePix());
 
 // Controller
 Registry.getInstance().provide("clienteController", new ClienteController());
 Registry.getInstance().provide("enderecoController", new EnderecoController());
 Registry.getInstance().provide("produtoController", new ProdutoController());
 Registry.getInstance().provide("cepController", new CepController());
+Registry.getInstance().provide("cobrancaController", new CobrancaController());
 
 httpServer.listen(3000);
