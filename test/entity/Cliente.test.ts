@@ -9,14 +9,18 @@ beforeEach(function () {
 });
 
 test("Deve criar uma conta", function () {
-	const account = Cliente.create("John Doe", "82991021732", endereco);
+	const account = Cliente.create("John Doe", "13299111485", "82991021732", endereco);
 	expect(account).toBeDefined();
 });
 
 test("Não deve criar uma conta com nome inválido", function () {
-	expect(() => Cliente.create("John", "82991021732", endereco)).toThrow(new Error("Nome inválido"));
+	expect(() => Cliente.create("John", "13299111485", "82991021732", endereco)).toThrow(new Error("Nome inválido"));
 });
 
 test("Não deve criar uma conta com telefone inválido", function () {
-	expect(() => Cliente.create("John Doe", "8299102173", endereco)).toThrow(new Error("Número de telefone inválido"));
+	expect(() => Cliente.create("John Doe", "13299111485", "1234", endereco)).toThrow(new Error("Número de telefone inválido"));
+});
+
+test("Não deve criar uma conta com cpf inválido", function () {
+	expect(() => Cliente.create("John Doe", "1234567890", "82991021732", endereco)).toThrow(new Error("CPF inválido"));
 });

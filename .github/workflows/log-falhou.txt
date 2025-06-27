@@ -1,0 +1,445 @@
+##[debug]Evaluating condition for step: 'Deploy to EC2'
+##[debug]Evaluating: success()
+##[debug]Evaluating success:
+##[debug]=> true
+##[debug]Result: true
+##[debug]Starting: Deploy to EC2
+##[debug]Loading inputs
+##[debug]Evaluating: secrets.EC2_HOST
+##[debug]Evaluating Index:
+##[debug]..Evaluating secrets:
+##[debug]..=> Object
+##[debug]..Evaluating String:
+##[debug]..=> 'EC2_HOST'
+##[debug]=> '***'
+##[debug]Result: '***'
+##[debug]Evaluating: secrets.EC2_USER
+##[debug]Evaluating Index:
+##[debug]..Evaluating secrets:
+##[debug]..=> Object
+##[debug]..Evaluating String:
+##[debug]..=> 'EC2_USER'
+##[debug]=> '***'
+##[debug]Result: '***'
+##[debug]Evaluating: secrets.EC2_SSH_KEY
+##[debug]Evaluating Index:
+##[debug]..Evaluating secrets:
+##[debug]..=> Object
+##[debug]..Evaluating String:
+##[debug]..=> 'EC2_SSH_KEY'
+##[debug]=> '***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***'
+##[debug]Result: '***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***
+##[debug]***'
+##[debug]Evaluating: secrets.EC2_PORT
+##[debug]Evaluating Index:
+##[debug]..Evaluating secrets:
+##[debug]..=> Object
+##[debug]..Evaluating String:
+##[debug]..=> 'EC2_PORT'
+##[debug]=> '***'
+##[debug]Result: '***'
+##[debug]Evaluating: format('# Navegar para o diretório do projeto
+##[debug]cd {0}
+##[debug]
+##[debug]# Fazer backup da versão atual (opcional)
+##[debug]sudo docker compose -f docker-compose.prod.yml down
+##[debug]
+##[debug]# Atualizar código do repositório
+##[debug]git pull origin master
+##[debug]
+##[debug]# Rebuild e restart dos containers
+##[debug]sudo docker compose -f docker-compose.prod.yml build --no-cache
+##[debug]sudo docker compose -f docker-compose.prod.yml up -d
+##[debug]
+##[debug]# Verificar se a aplicação está rodando
+##[debug]sleep 10
+##[debug]curl -f http://localhost:3000/health || exit 1
+##[debug]
+##[debug]# Limpar imagens antigas do Docker
+##[debug]sudo docker image prune -f', secrets.PROJECT_PATH)
+##[debug]Evaluating format:
+##[debug]..Evaluating String:
+##[debug]..=> '# Navegar para o diretório do projeto
+##[debug]cd {0}
+##[debug]
+##[debug]# Fazer backup da versão atual (opcional)
+##[debug]sudo docker compose -f docker-compose.prod.yml down
+##[debug]
+##[debug]# Atualizar código do repositório
+##[debug]git pull origin master
+##[debug]
+##[debug]# Rebuild e restart dos containers
+##[debug]sudo docker compose -f docker-compose.prod.yml build --no-cache
+##[debug]sudo docker compose -f docker-compose.prod.yml up -d
+##[debug]
+##[debug]# Verificar se a aplicação está rodando
+##[debug]sleep 10
+##[debug]curl -f http://localhost:3000/health || exit 1
+##[debug]
+##[debug]# Limpar imagens antigas do Docker
+##[debug]sudo docker image prune -f'
+##[debug]..Evaluating Index:
+##[debug]....Evaluating secrets:
+##[debug]....=> Object
+##[debug]....Evaluating String:
+##[debug]....=> 'PROJECT_PATH'
+##[debug]..=> '***'
+##[debug]=> '# Navegar para o diretório do projeto
+##[debug]cd ***
+##[debug]
+##[debug]# Fazer backup da versão atual (opcional)
+##[debug]sudo docker compose -f docker-compose.prod.yml down
+##[debug]
+##[debug]# Atualizar código do repositório
+##[debug]git pull origin master
+##[debug]
+##[debug]# Rebuild e restart dos containers
+##[debug]sudo docker compose -f docker-compose.prod.yml build --no-cache
+##[debug]sudo docker compose -f docker-compose.prod.yml up -d
+##[debug]
+##[debug]# Verificar se a aplicação está rodando
+##[debug]sleep 10
+##[debug]curl -f http://localhost:3000/health || exit 1
+##[debug]
+##[debug]# Limpar imagens antigas do Docker
+##[debug]sudo docker image prune -f'
+##[debug]Result: '# Navegar para o diretório do projeto
+##[debug]cd ***
+##[debug]
+##[debug]# Fazer backup da versão atual (opcional)
+##[debug]sudo docker compose -f docker-compose.prod.yml down
+##[debug]
+##[debug]# Atualizar código do repositório
+##[debug]git pull origin master
+##[debug]
+##[debug]# Rebuild e restart dos containers
+##[debug]sudo docker compose -f docker-compose.prod.yml build --no-cache
+##[debug]sudo docker compose -f docker-compose.prod.yml up -d
+##[debug]
+##[debug]# Verificar se a aplicação está rodando
+##[debug]sleep 10
+##[debug]curl -f http://localhost:3000/health || exit 1
+##[debug]
+##[debug]# Limpar imagens antigas do Docker
+##[debug]sudo docker image prune -f'
+##[debug]Loading env
+Run appleboy/ssh-action@v1.0.3
+/usr/bin/docker run --name a2dece5ce9c6930c456381df688cd9e40161_a89c8d --label 77a2de --workdir /github/workspace --rm -e "INPUT_HOST" -e "INPUT_USERNAME" -e "INPUT_KEY" -e "INPUT_PORT" -e "INPUT_SCRIPT" -e "INPUT_PASSPHRASE" -e "INPUT_PASSWORD" -e "INPUT_SYNC" -e "INPUT_USE_INSECURE_CIPHER" -e "INPUT_CIPHER" -e "INPUT_TIMEOUT" -e "INPUT_COMMAND_TIMEOUT" -e "INPUT_KEY_PATH" -e "INPUT_FINGERPRINT" -e "INPUT_PROXY_HOST" -e "INPUT_PROXY_PORT" -e "INPUT_PROXY_USERNAME" -e "INPUT_PROXY_PASSWORD" -e "INPUT_PROXY_PASSPHRASE" -e "INPUT_PROXY_TIMEOUT" -e "INPUT_PROXY_KEY" -e "INPUT_PROXY_KEY_PATH" -e "INPUT_PROXY_FINGERPRINT" -e "INPUT_PROXY_CIPHER" -e "INPUT_PROXY_USE_INSECURE_CIPHER" -e "INPUT_SCRIPT_STOP" -e "INPUT_ENVS" -e "INPUT_ENVS_FORMAT" -e "INPUT_DEBUG" -e "INPUT_ALLENVS" -e "INPUT_REQUEST_PTY" -e "HOME" -e "GITHUB_JOB" -e "GITHUB_REF" -e "GITHUB_SHA" -e "GITHUB_REPOSITORY" -e "GITHUB_REPOSITORY_OWNER" -e "GITHUB_REPOSITORY_OWNER_ID" -e "GITHUB_RUN_ID" -e "GITHUB_RUN_NUMBER" -e "GITHUB_RETENTION_D
+======CMD======
+# Navegar para o diretório do projeto
+cd ***
+# Fazer backup da versão atual (opcional)
+sudo docker compose -f docker-compose.prod.yml down
+# Atualizar código do repositório
+git pull origin master
+# Rebuild e restart dos containers
+sudo docker compose -f docker-compose.prod.yml build --no-cache
+sudo docker compose -f docker-compose.prod.yml up -d
+# Verificar se a aplicação está rodando
+sleep 10
+curl -f http://localhost:3000/health || exit 1
+# Limpar imagens antigas do Docker
+sudo docker image prune -f
+======END======
+err: zsh:cd:2: no such file or directory: ***
+err: unknown shorthand flag: 'f' in -f
+err: See 'docker --help'.
+err: Usage:  docker [OPTIONS] COMMAND
+err: A self-sufficient runtime for containers
+err: Common Commands:
+err:   run         Create and run a new container from an image
+err:   exec        Execute a command in a running container
+err:   ps          List containers
+err:   build       Build an image from a Dockerfile
+err:   pull        Download an image from a registry
+err:   push        Upload an image to a registry
+err:   images      List images
+err:   login       Authenticate to a registry
+err:   logout      Log out from a registry
+err:   search      Search Docker Hub for images
+err:   version     Show the Docker version information
+err:   info        Display system-wide information
+err: Management Commands:
+err:   builder     Manage builds
+err:   container   Manage containers
+err:   context     Manage contexts
+err:   image       Manage images
+err:   manifest    Manage Docker image manifests and manifest lists
+err:   network     Manage networks
+err:   plugin      Manage plugins
+err:   system      Manage Docker
+err:   trust       Manage trust on Docker images
+err:   volume      Manage volumes
+err: Swarm Commands:
+err:   swarm       Manage Swarm
+err: Commands:
+err:   attach      Attach local standard input, output, and error streams to a running container
+err:   commit      Create a new image from a container's changes
+err:   cp          Copy files/folders between a container and the local filesystem
+err:   create      Create a new container
+err:   diff        Inspect changes to files or directories on a container's filesystem
+err:   events      Get real time events from the server
+err:   export      Export a container's filesystem as a tar archive
+err:   history     Show the history of an image
+err:   import      Import the contents from a tarball to create a filesystem image
+err:   inspect     Return low-level information on Docker objects
+err:   kill        Kill one or more running containers
+err:   load        Load an image from a tar archive or STDIN
+err:   logs        Fetch the logs of a container
+err:   pause       Pause all processes within one or more containers
+err:   port        List port mappings or a specific mapping for the container
+err:   rename      Rename a container
+err:   restart     Restart one or more containers
+err:   rm          Remove one or more containers
+err:   rmi         Remove one or more images
+err:   save        Save one or more images to a tar archive (streamed to STDOUT by default)
+err:   start       Start one or more stopped containers
+err:   stats       Display a live stream of container(s) resource usage statistics
+err:   stop        Stop one or more running containers
+err:   tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+err:   top         Display the running processes of a container
+err:   unpause     Unpause all processes within one or more containers
+err:   update      Update configuration of one or more containers
+err:   wait        Block until one or more containers stop, then print their exit codes
+err: Global Options:
+err:       --config string      Location of client config files (default
+err:                            "/root/.docker")
+err:   -c, --context string     Name of the context to use to connect to the
+err:                            daemon (overrides DOCKER_HOST env var and
+err:                            default context set with "docker context use")
+err:   -D, --debug              Enable debug mode
+err:   -H, --host list          Daemon socket to connect to
+err:   -l, --log-level string   Set the logging level ("debug", "info",
+err:                            "warn", "error", "fatal") (default "info")
+err:       --tls                Use TLS; implied by --tlsverify
+err:       --tlscacert string   Trust certs signed only by this CA (default
+err:                            "/root/.docker/ca.pem")
+err:       --tlscert string     Path to TLS certificate file (default
+err:                            "/root/.docker/cert.pem")
+err:       --tlskey string      Path to TLS key file (default
+err:                            "/root/.docker/key.pem")
+err:       --tlsverify          Use TLS and verify the remote
+err:   -v, --version            Print version information and quit
+err: Run 'docker COMMAND --help' for more information on a command.
+err: For more help on how to use Docker, head to https://docs.docker.com/go/guides/
+err: fatal: not a git repository (or any of the parent directories): .git
+err: unknown shorthand flag: 'f' in -f
+err: See 'docker --help'.
+err: Usage:  docker [OPTIONS] COMMAND
+err: A self-sufficient runtime for containers
+err: Common Commands:
+err:   run         Create and run a new container from an image
+err:   exec        Execute a command in a running container
+err:   ps          List containers
+err:   build       Build an image from a Dockerfile
+err:   pull        Download an image from a registry
+err:   push        Upload an image to a registry
+err:   images      List images
+err:   login       Authenticate to a registry
+err:   logout      Log out from a registry
+err:   search      Search Docker Hub for images
+err:   version     Show the Docker version information
+err:   info        Display system-wide information
+err: Management Commands:
+err:   builder     Manage builds
+err:   container   Manage containers
+err:   context     Manage contexts
+err:   image       Manage images
+err:   manifest    Manage Docker image manifests and manifest lists
+err:   network     Manage networks
+err:   plugin      Manage plugins
+err:   system      Manage Docker
+err:   trust       Manage trust on Docker images
+err:   volume      Manage volumes
+err: Swarm Commands:
+err:   swarm       Manage Swarm
+err: Commands:
+err:   attach      Attach local standard input, output, and error streams to a running container
+err:   commit      Create a new image from a container's changes
+err:   cp          Copy files/folders between a container and the local filesystem
+err:   create      Create a new container
+err:   diff        Inspect changes to files or directories on a container's filesystem
+err:   events      Get real time events from the server
+err:   export      Export a container's filesystem as a tar archive
+err:   history     Show the history of an image
+err:   import      Import the contents from a tarball to create a filesystem image
+err:   inspect     Return low-level information on Docker objects
+err:   kill        Kill one or more running containers
+err:   load        Load an image from a tar archive or STDIN
+err:   logs        Fetch the logs of a container
+err:   pause       Pause all processes within one or more containers
+err:   port        List port mappings or a specific mapping for the container
+err:   rename      Rename a container
+err:   restart     Restart one or more containers
+err:   rm          Remove one or more containers
+err:   rmi         Remove one or more images
+err:   save        Save one or more images to a tar archive (streamed to STDOUT by default)
+err:   start       Start one or more stopped containers
+err:   stats       Display a live stream of container(s) resource usage statistics
+err:   stop        Stop one or more running containers
+err:   tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+err:   top         Display the running processes of a container
+err:   unpause     Unpause all processes within one or more containers
+err:   update      Update configuration of one or more containers
+err:   wait        Block until one or more containers stop, then print their exit codes
+err: Global Options:
+err:       --config string      Location of client config files (default
+err:                            "/root/.docker")
+err:   -c, --context string     Name of the context to use to connect to the
+err:                            daemon (overrides DOCKER_HOST env var and
+err:                            default context set with "docker context use")
+err:   -D, --debug              Enable debug mode
+err:   -H, --host list          Daemon socket to connect to
+err:   -l, --log-level string   Set the logging level ("debug", "info",
+err:                            "warn", "error", "fatal") (default "info")
+err:       --tls                Use TLS; implied by --tlsverify
+err:       --tlscacert string   Trust certs signed only by this CA (default
+err:                            "/root/.docker/ca.pem")
+err:       --tlscert string     Path to TLS certificate file (default
+err:                            "/root/.docker/cert.pem")
+err:       --tlskey string      Path to TLS key file (default
+err:                            "/root/.docker/key.pem")
+err:       --tlsverify          Use TLS and verify the remote
+err:   -v, --version            Print version information and quit
+err: Run 'docker COMMAND --help' for more information on a command.
+err: For more help on how to use Docker, head to https://docs.docker.com/go/guides/
+err: unknown shorthand flag: 'f' in -f
+err: See 'docker --help'.
+err: Usage:  docker [OPTIONS] COMMAND
+err: A self-sufficient runtime for containers
+err: Common Commands:
+err:   run         Create and run a new container from an image
+err:   exec        Execute a command in a running container
+err:   ps          List containers
+err:   build       Build an image from a Dockerfile
+err:   pull        Download an image from a registry
+err:   push        Upload an image to a registry
+err:   images      List images
+err:   login       Authenticate to a registry
+err:   logout      Log out from a registry
+err:   search      Search Docker Hub for images
+err:   version     Show the Docker version information
+err:   info        Display system-wide information
+err: Management Commands:
+err:   builder     Manage builds
+err:   container   Manage containers
+err:   context     Manage contexts
+err:   image       Manage images
+err:   manifest    Manage Docker image manifests and manifest lists
+err:   network     Manage networks
+err:   plugin      Manage plugins
+err:   system      Manage Docker
+err:   trust       Manage trust on Docker images
+err:   volume      Manage volumes
+err: Swarm Commands:
+err:   swarm       Manage Swarm
+err: Commands:
+err:   attach      Attach local standard input, output, and error streams to a running container
+err:   commit      Create a new image from a container's changes
+err:   cp          Copy files/folders between a container and the local filesystem
+err:   create      Create a new container
+err:   diff        Inspect changes to files or directories on a container's filesystem
+err:   events      Get real time events from the server
+err:   export      Export a container's filesystem as a tar archive
+err:   history     Show the history of an image
+err:   import      Import the contents from a tarball to create a filesystem image
+err:   inspect     Return low-level information on Docker objects
+err:   kill        Kill one or more running containers
+err:   load        Load an image from a tar archive or STDIN
+err:   logs        Fetch the logs of a container
+err:   pause       Pause all processes within one or more containers
+err:   port        List port mappings or a specific mapping for the container
+err:   rename      Rename a container
+err:   restart     Restart one or more containers
+err:   rm          Remove one or more containers
+err:   rmi         Remove one or more images
+err:   save        Save one or more images to a tar archive (streamed to STDOUT by default)
+err:   start       Start one or more stopped containers
+err:   stats       Display a live stream of container(s) resource usage statistics
+err:   stop        Stop one or more running containers
+err:   tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+err:   top         Display the running processes of a container
+err:   unpause     Unpause all processes within one or more containers
+err:   update      Update configuration of one or more containers
+err:   wait        Block until one or more containers stop, then print their exit codes
+err: Global Options:
+err:       --config string      Location of client config files (default
+err:                            "/root/.docker")
+err:   -c, --context string     Name of the context to use to connect to the
+err:                            daemon (overrides DOCKER_HOST env var and
+err:                            default context set with "docker context use")
+err:   -D, --debug              Enable debug mode
+err:   -H, --host list          Daemon socket to connect to
+err:   -l, --log-level string   Set the logging level ("debug", "info",
+err:                            "warn", "error", "fatal") (default "info")
+err:       --tls                Use TLS; implied by --tlsverify
+err:       --tlscacert string   Trust certs signed only by this CA (default
+err:                            "/root/.docker/ca.pem")
+err:       --tlscert string     Path to TLS certificate file (default
+err:                            "/root/.docker/cert.pem")
+err:       --tlskey string      Path to TLS key file (default
+err:                            "/root/.docker/key.pem")
+err:       --tlsverify          Use TLS and verify the remote
+err:   -v, --version            Print version information and quit
+err: Run 'docker COMMAND --help' for more information on a command.
+err: For more help on how to use Docker, head to https://docs.docker.com/go/guides/
+err:   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+err:                                  Dload  Upload   Total   Spent    Left  Speed
+2025/06/*** 17:50:31 Process exited with status 1
+err: 
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+err: curl: (7) Failed to connect to localhost port 3000 after 1 ms: Couldn't connect to server
+##[debug]Docker Action run completed with exit code 1
+##[debug]Finishing: Deploy to EC2

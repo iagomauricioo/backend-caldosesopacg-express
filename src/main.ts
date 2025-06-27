@@ -14,6 +14,8 @@ import ListarProdutosDisponiveis from "./application/usecase/ListarProdutos";
 import CepController from "./infra/controller/Cep.controller";
 import BuscarCep from "./application/usecase/BuscarCep";
 import CepService from "./domain/service/Cep.service";
+import RegistrarClienteNoAsaas from "./application/usecase/RegistrarClienteNoAsaas";
+import { AsaasGatewayHttp } from "./infra/gateway/Asaas.gateway";
 
 // Configurar logger para exibir SQL
 Logger.getInstance().setLevel("debug");
@@ -34,6 +36,8 @@ Registry.getInstance().provide("buscarCliente", new BuscarCliente());
 Registry.getInstance().provide("registrarCliente", new RegistrarCliente());
 Registry.getInstance().provide("listarProdutosDisponiveis", new ListarProdutosDisponiveis());
 Registry.getInstance().provide("buscarCep", new BuscarCep());
+Registry.getInstance().provide("registrarClienteNoAsaas", new RegistrarClienteNoAsaas());
+Registry.getInstance().provide("asaasGateway", new AsaasGatewayHttp());
 
 // Service
 Registry.getInstance().provide("cepService", new CepService());

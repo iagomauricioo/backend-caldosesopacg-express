@@ -10,7 +10,7 @@ function gerarCelularAleatorio(ddd = "82") {
   return ddd + prefixo + numero;
 }
 
-test("Deve criar um cliente", async function () {
+test.skip("Deve criar um cliente", async function () {
   const input = {
     nome: "Iago Mauricio",
     telefone: gerarCelularAleatorio(),

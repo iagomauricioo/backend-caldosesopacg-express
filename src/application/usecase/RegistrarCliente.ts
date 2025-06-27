@@ -13,7 +13,7 @@ export default class RegistrarCliente {
   async execute(input: RegistrarClienteInput) {
     const clienteExiste = await this.clienteRepository?.buscarClientePorTelefone(input.telefone);
     if (clienteExiste) throw new Error("Cliente já cadastrado");
-    const cliente = Cliente.create(input.nome, input.telefone);
+    const cliente = Cliente.create(input.nome, input.cpf, input.telefone);
     const clienteSalvo = await this.clienteRepository?.salvarCliente(cliente);
     if (!clienteSalvo) throw new Error("Erro ao salvar cliente");
     if (input.endereco) {
@@ -31,6 +31,7 @@ export default class RegistrarCliente {
 
 type RegistrarClienteInput = {
   nome: string;
+  cpf: string;
   telefone: string;
   endereco?: {
     rua: string;

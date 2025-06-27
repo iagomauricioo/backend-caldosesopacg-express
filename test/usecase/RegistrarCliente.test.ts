@@ -40,6 +40,7 @@ test("Deve criar um cliente com stub e buscar por telefone", async function () {
 	const input = {
 		nome: "John Doe",
 		telefone: "82991021732",
+		cpf: "13299111485",
 		endereco: {
 			rua: "Rua das Flores",
 			numero: "123",
@@ -55,7 +56,7 @@ test("Deve criar um cliente com stub e buscar por telefone", async function () {
 	expect(outputRegistrarCliente.clienteId).toBeDefined();
 
 	// Agora simula que o cliente existe, para o segundo use case
-	const clienteMock = new Cliente(UUID.create().getValue(), input.nome, input.telefone, endereco);
+	const clienteMock = new Cliente(UUID.create().getValue(), input.nome, input.cpf, input.telefone, endereco);
 	clienteRepositoryStub.buscarClientePorTelefone.resolves(clienteMock);
 
 	const outputBuscarCliente = await buscarCliente.execute(input.telefone);
@@ -67,7 +68,7 @@ test("Não deve criar um cliente duplicado com stub", async function () {
 	const clienteRepositoryStub = sinon.createStubInstance(ClienteRepositoryDatabase);
 	const enderecoRepositoryStub = sinon.createStubInstance(EnderecoRepositoryDatabase);
 	
-	const clienteExistente = new Cliente(UUID.create().getValue(), "John Doe", "82991021732", endereco);
+	const clienteExistente = new Cliente(UUID.create().getValue(), "John Doe", "13299111485", "82991021732", endereco);
 	clienteRepositoryStub.buscarClientePorTelefone.resolves(clienteExistente);
 	clienteRepositoryStub.salvarCliente.resolves({ id: UUID.create().getValue() });
 	enderecoRepositoryStub.salvarEndereco.resolves();
@@ -78,6 +79,7 @@ test("Não deve criar um cliente duplicado com stub", async function () {
 	const registrarCliente = new RegistrarCliente();
 	const input = {
 		nome: "John Doe",
+		cpf: "13299111485",
 		telefone: "82991021732",
 		endereco: {
 			rua: "Rua das Flores",
