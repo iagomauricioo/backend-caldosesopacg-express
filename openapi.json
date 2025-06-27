@@ -188,31 +188,89 @@
 							"name": "/pagamentos/test-asaas",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": "{{_base_url}}/pagamentos/test-asaas",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"pagamentos",
+										"test-asaas"
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "/pagamentos/{id}/status",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"pedidoId\": 4,\n  \"telefoneCliente\": \"82932875399\",\n  \"cpfCliente\": \"13299111485\",\n  \"emailCliente\": \"cliente@email.com\",\n  \"valorCentavos\": 1700,\n  \"minutosParaVencer\": 10,\n  \"observacoes\": \"Pagamento teste\"\n}"
+								},
+								"url": {
+									"raw": "{{_base_url}}/pagamentos/{{id}}/status",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"pagamentos",
+										"{{id}}",
+										"status"
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "/pagamentos/{id}/simular-aprovacao",
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{_base_url}}/pagamentos/{{id}}/simular-aprovacao",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"pagamentos",
+										"{{id}}",
+										"simular-aprovacao"
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "/webhook/asaas",
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"event\": \"PAYMENT_RECEIVED\",\n    \"payment\": {\n      \"id\": \"pay_ptr4w78yxszzusy2\",\n      \"status\": \"RECEIVED\",\n      \"value\": 15.00\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{_base_url}}/webhooks/asaas",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"webhooks",
+										"asaas"
+									]
+								}
 							},
 							"response": []
 						}
@@ -223,9 +281,25 @@
 					"item": [
 						{
 							"name": "/health",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"pedidoId\": 4,\n  \"telefoneCliente\": \"82932875399\",\n  \"cpfCliente\": \"13299111485\",\n  \"emailCliente\": \"cliente@email.com\",\n  \"valorCentavos\": 1700,\n  \"minutosParaVencer\": 10,\n  \"observacoes\": \"Pagamento teste\"\n}"
+								},
+								"url": {
+									"raw": "{{_base_url}}/health",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"health"
+									]
+								}
 							},
 							"response": []
 						}
@@ -281,7 +355,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"billingType\": \"PIX\",\n    \"customer\": \"cus_000006804980\",\n    \"value\": 100,\n    \"dueDate\": \"2025-06-26\"\n}",
+									"raw": "{\n    \"billingType\": \"CREDIT_CARD\",\n    \"customer\": \"cus_000006804980\",\n    \"value\": 100,\n    \"dueDate\": \"2025-06-26\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -304,7 +378,18 @@
 							"name": "/cobranca/pixQrCode/{id}",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": "{{_base_url}}/cobranca/pixQrCode/{{idCobranca}}",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"cobranca",
+										"pixQrCode",
+										"{{idCobranca}}"
+									]
+								}
 							},
 							"response": []
 						}
