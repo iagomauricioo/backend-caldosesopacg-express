@@ -1,5 +1,5 @@
 import { inject } from "../../infra/di/DI";
-import { AsaasCobranca, AsaasGateway } from "../../infra/gateway/Asaas.gateway";
+import { AsaasGateway } from "../../infra/gateway/Asaas.gateway";
 
 export default class BuscarQrCodePix {
   @inject("asaasGateway")

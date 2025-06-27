@@ -6,6 +6,7 @@ dotenv.config();
 export interface AsaasGateway {
   cadastrarCliente(cliente: AsaasCliente): Promise<any>;
   realizarCobrancaViaPix(cobranca: AsaasCobranca): Promise<any>;
+  realizarCobrancaViaCartaoDeCredito(cobranca: AsaasCobranca): Promise<any>;
   buscarQrCodePix(id: string): Promise<any>;
 }
 
@@ -27,6 +28,17 @@ export class AsaasGatewayHttp implements AsaasGateway {
   async realizarCobrancaViaPix(cobranca: AsaasCobranca): Promise<any> {
     if (!this.api_key) throw new Error("ASAAS_API_KEY não configurada");
     const response = await axios.post(`${this.base_url}/lean/payments`, cobranca, {
+      headers: {
+        'access_token': this.api_key,
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.data;
+  }
+
+  async realizarCobrancaViaCartaoDeCredito(cobranca: AsaasCobranca): Promise<any> {
+    if (!this.api_key) throw new Error("ASAAS_API_KEY não configurada");
+    const response = await axios.post(`${this.base_url}/payments`, cobranca, {
       headers: {
         'access_token': this.api_key,
         'Content-Type': 'application/json'

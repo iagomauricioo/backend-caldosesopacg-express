@@ -19,6 +19,7 @@ import BrasilApiGateway from "./infra/gateway/BrasilApi.gateway";
 import CobrancaController from "./infra/controller/Cobranca.controller";
 import GerarCobranca from "./application/usecase/GerarCobranca";
 import BuscarQrCodePix from "./application/usecase/BuscarQrCodePix";
+import HealthController from "./infra/controller/Health.controller";
 
 // Configurar logger para exibir SQL
 Logger.getInstance().setLevel("debug");
@@ -53,5 +54,6 @@ Registry.getInstance().provide("enderecoController", new EnderecoController());
 Registry.getInstance().provide("produtoController", new ProdutoController());
 Registry.getInstance().provide("cepController", new CepController());
 Registry.getInstance().provide("cobrancaController", new CobrancaController());
+Registry.getInstance().provide("healthController", new HealthController());
 
 httpServer.listen(3000);
