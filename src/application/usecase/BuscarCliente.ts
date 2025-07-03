@@ -11,7 +11,8 @@ export default class BuscarCliente {
 		return {
 			clienteId: cliente.getClienteId(),
 			nome: cliente.getNome(),
-			telefone: cliente.getTelefone()
+			telefone: cliente.getTelefone(),
+			cpf: cliente.getCpf()
 		};
 	}
 }

@@ -61,7 +61,6 @@ export class AsaasGatewayHttp implements AsaasGateway {
 export type AsaasCliente = {
     "name": string,
     "cpfCnpj": string,
-    "email": string,
     "mobilePhone": string,
     "address": string, //rua
     "addressNumber": string, //numero
