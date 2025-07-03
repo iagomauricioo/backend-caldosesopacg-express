@@ -81,7 +81,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"nome\": \"Iago Mauricio\",\n  \"telefone\": \"82991020016\",\n  \"endereco\": {\n    \"rua\": \"Rua das Flores\",\n    \"complemento\": \"apto 403\",\n    \"numero\": \"123\",\n    \"bairro\": \"Centro\",\n    \"pontoReferencia\": \"uninassau\",\n    \"cep\": \"12345-678\"\n  }\n}",
+									"raw": "{\n  \"nome\": \"Iago Mauricio dos Santos Silva\",\n  \"cpf\": \"22593685069\",\n  \"telefone\": \"82999999999\",\n  \"endereco\": {\n    \"rua\": \"Quadra 19\",\n    \"complemento\": \"\",\n    \"numero\": \"36\",\n    \"bairro\": \"Canto da Saudade\",\n    \"pontoReferencia\": \"Próximo a casa do lucas lima\",\n    \"cep\": \"57241040\"\n  }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -281,16 +281,9 @@
 					"item": [
 						{
 							"name": "/health",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"pedidoId\": 4,\n  \"telefoneCliente\": \"82932875399\",\n  \"cpfCliente\": \"13299111485\",\n  \"emailCliente\": \"cliente@email.com\",\n  \"valorCentavos\": 1700,\n  \"minutosParaVencer\": 10,\n  \"observacoes\": \"Pagamento teste\"\n}"
-								},
 								"url": {
 									"raw": "{{_base_url}}/health",
 									"host": [
@@ -321,7 +314,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"name\": \"João Silva Santos\",\n  \"cpfCnpj\": \"13299111485\",\n  \"email\": \"joao.silva@email.com\",\n  \"mobilePhone\": \"11987654321\",\n  \"address\": \"Rua das Floress\",\n  \"addressNumber\": \"123\",\n  \"complement\": \"Apto 45\",\n  \"province\": \"Centro\",\n  \"postalCode\": \"01234-567\"\n}",
+									"raw": "{\n  \"name\": \"João Silva Santos\",\n  \"cpfCnpj\": \"13299111485\",\n  \"mobilePhone\": \"11987654321\",\n  \"address\": \"Rua das Floress\",\n  \"addressNumber\": \"123\",\n  \"complement\": \"Apto 45\",\n  \"province\": \"Centro\",\n  \"postalCode\": \"01234-567\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -355,7 +348,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"billingType\": \"CREDIT_CARD\",\n    \"customer\": \"cus_000006804980\",\n    \"value\": 100,\n    \"dueDate\": \"2025-06-26\"\n}",
+									"raw": "{\n    \"billingType\": \"PIX\",\n    \"customer\": \"cus_000006806249\",\n    \"value\": 100,\n    \"dueDate\": \"2025-06-27\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -390,6 +383,14 @@
 										"{{idCobranca}}"
 									]
 								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"method": "GET",
+								"header": []
 							},
 							"response": []
 						}
