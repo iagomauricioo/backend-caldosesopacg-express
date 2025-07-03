@@ -8,105 +8,392 @@
 	},
 	"item": [
 		{
-			"name": "Clientes",
+			"name": "/api/v1",
 			"item": [
 				{
-					"name": "Endereco",
+					"name": "Clientes",
 					"item": [
 						{
-							"name": "/clientes/{telefoneCliente}/endereco",
+							"name": "Endereco",
+							"item": [
+								{
+									"name": "/clientes/{telefoneCliente}/endereco",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"nome\": \"John Doe\",\n  \"telefone\": \"82991021777\"\n}\n"
+										},
+										"url": {
+											"raw": "{{_base_url}}/clientes/{{telefoneCliente}}/endereco",
+											"host": [
+												"{{_base_url}}"
+											],
+											"path": [
+												"clientes",
+												"{{telefoneCliente}}",
+												"endereco"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "/clientes/{telefone}",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": "{{_base_url}}/clientes/{{telefone}}",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"clientes",
+										"{{telefone}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/clientes",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"Iago Mauricio\",\n  \"telefone\": \"82991020016\",\n  \"endereco\": {\n    \"rua\": \"Rua das Flores\",\n    \"complemento\": \"apto 403\",\n    \"numero\": \"123\",\n    \"bairro\": \"Centro\",\n    \"pontoReferencia\": \"uninassau\",\n    \"cep\": \"12345-678\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{_base_url}}/clientes",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"clientes"
+									]
+								}
 							},
 							"response": []
 						}
 					]
 				},
 				{
-					"name": "/clientes/{telefone}",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{_base_url}}/clientes/{{telefone}}",
-							"host": [
-								"{{_base_url}}"
-							],
-							"path": [
-								"clientes",
-								"{{telefone}}"
-							]
+					"name": "Produtos",
+					"item": [
+						{
+							"name": "/produtos",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"John Doe\",\n  \"telefone\": \"82991021777\"\n}\n"
+								},
+								"url": {
+									"raw": "{{_base_url}}/produtos",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "/clientes",
-					"event": [
+					"name": "CEP",
+					"item": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"nome\": \"John Doe\",\n  \"telefone\": \"82991021777\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "/cep/{cep}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{_base_url}}/cep/{{cep}}",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"cep",
+										"{{cep}}"
+									]
 								}
-							}
-						},
-						"url": {
-							"raw": "{{_base_url}}/clientes",
-							"host": [
-								"{{_base_url}}"
-							],
-							"path": [
-								"clientes"
-							]
+							},
+							"response": []
 						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Produtos",
-			"item": [
+					]
+				},
 				{
-					"name": "/produtos",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"nome\": \"John Doe\",\n  \"telefone\": \"82991021777\"\n}\n"
+					"name": "Pagamentos",
+					"item": [
+						{
+							"name": "/pagamentos/pix",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"pedidoId\": 4,\n  \"telefoneCliente\": \"82932875399\",\n  \"cpfCliente\": \"13299111485\",\n  \"emailCliente\": \"cliente@email.com\",\n  \"valorCentavos\": 1700,\n  \"minutosParaVencer\": 10,\n  \"observacoes\": \"Pagamento teste\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{_base_url}}/pagamentos/pix",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"pagamentos",
+										"pix"
+									]
+								}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{_base_url}}/produtos",
-							"host": [
-								"{{_base_url}}"
-							],
-							"path": [
-								"produtos"
-							]
+						{
+							"name": "/pagamentos/test-asaas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{_base_url}}/pagamentos/test-asaas",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"pagamentos",
+										"test-asaas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/pagamentos/{id}/status",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"pedidoId\": 4,\n  \"telefoneCliente\": \"82932875399\",\n  \"cpfCliente\": \"13299111485\",\n  \"emailCliente\": \"cliente@email.com\",\n  \"valorCentavos\": 1700,\n  \"minutosParaVencer\": 10,\n  \"observacoes\": \"Pagamento teste\"\n}"
+								},
+								"url": {
+									"raw": "{{_base_url}}/pagamentos/{{id}}/status",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"pagamentos",
+										"{{id}}",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/pagamentos/{id}/simular-aprovacao",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{_base_url}}/pagamentos/{{id}}/simular-aprovacao",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"pagamentos",
+										"{{id}}",
+										"simular-aprovacao"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/webhook/asaas",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"event\": \"PAYMENT_RECEIVED\",\n    \"payment\": {\n      \"id\": \"pay_ptr4w78yxszzusy2\",\n      \"status\": \"RECEIVED\",\n      \"value\": 15.00\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{_base_url}}/webhooks/asaas",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"webhooks",
+										"asaas"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
+				},
+				{
+					"name": "Health",
+					"item": [
+						{
+							"name": "/health",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"pedidoId\": 4,\n  \"telefoneCliente\": \"82932875399\",\n  \"cpfCliente\": \"13299111485\",\n  \"emailCliente\": \"cliente@email.com\",\n  \"valorCentavos\": 1700,\n  \"minutosParaVencer\": 10,\n  \"observacoes\": \"Pagamento teste\"\n}"
+								},
+								"url": {
+									"raw": "{{_base_url}}/health",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"health"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Asaas",
+					"item": [
+						{
+							"name": "/clientes/asaas",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6Ojg1MzI4ZmRiLWNiMmQtNDgwYi1hNWQ1LTA1ZjYzYjFlOTUzMjo6JGFhY2hfYmJiN2Y3MDMtNTBkOS00MTk2LWJkODEtNWJhNTI5Mzg5ZDRj",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"João Silva Santos\",\n  \"cpfCnpj\": \"13299111485\",\n  \"email\": \"joao.silva@email.com\",\n  \"mobilePhone\": \"11987654321\",\n  \"address\": \"Rua das Floress\",\n  \"addressNumber\": \"123\",\n  \"complement\": \"Apto 45\",\n  \"province\": \"Centro\",\n  \"postalCode\": \"01234-567\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{_base_url}}/clientes/asaas",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"clientes",
+										"asaas"
+									],
+									"query": [
+										{
+											"key": "acess_token",
+											"value": "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6Ojg1MzI4ZmRiLWNiMmQtNDgwYi1hNWQ1LTA1ZjYzYjFlOTUzMjo6JGFhY2hfYmJiN2Y3MDMtNTBkOS00MTk2LWJkODEtNWJhNTI5Mzg5ZDRj",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/cobranca",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"billingType\": \"CREDIT_CARD\",\n    \"customer\": \"cus_000006804980\",\n    \"value\": 100,\n    \"dueDate\": \"2025-06-26\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{_base_url}}/cobranca",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"cobranca"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/cobranca/pixQrCode/{id}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{_base_url}}/cobranca/pixQrCode/{{idCobranca}}",
+									"host": [
+										"{{_base_url}}"
+									],
+									"path": [
+										"cobranca",
+										"pixQrCode",
+										"{{idCobranca}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}

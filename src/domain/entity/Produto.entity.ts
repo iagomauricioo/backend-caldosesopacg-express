@@ -11,8 +11,9 @@ export default class Produto {
   private disponivel: boolean;
   private ordem_exibicao: number;
   private variacoes: VariacaoProduto[];
+  private imagem_url: string;
   
-  constructor(id: number, nome: string, descricao: string, disponivel: boolean, ordem_exibicao: number, variacoes: VariacaoProduto[] = []) {
+  constructor(id: number, nome: string, descricao: string, disponivel: boolean, ordem_exibicao: number, variacoes: VariacaoProduto[] = [], imagem_url: string) {
     this.id = id;
     if (!nome) {
       throw new Error("Nome inválido");
@@ -25,20 +26,21 @@ export default class Produto {
     this.disponivel = disponivel;
     this.ordem_exibicao = ordem_exibicao;
     this.variacoes = variacoes;
+    this.imagem_url = imagem_url;
   }
 
-  static create(nome: string, descricao: string, disponivel: boolean, ordem_exibicao: number, variacoes: VariacaoProduto[] = []) {
-    return new Produto(0, nome, descricao, disponivel, ordem_exibicao, variacoes);
+  static create(nome: string, descricao: string, disponivel: boolean, ordem_exibicao: number, variacoes: VariacaoProduto[] = [], imagem_url: string) {
+    return new Produto(0, nome, descricao, disponivel, ordem_exibicao, variacoes, imagem_url);
   }
 
   // Método para compatibilidade com a versão anterior
-  static createComVariacaoUnica(nome: string, descricao: string, disponivel: boolean, ordem_exibicao: number, tamanho_ml: number, nome_tamanho: string, preco_centavos: number) {
+  static createComVariacaoUnica(nome: string, descricao: string, disponivel: boolean, ordem_exibicao: number, tamanho_ml: number, nome_tamanho: string, preco_centavos: number, imagem_url: string) {
     const variacao: VariacaoProduto = {
       tamanho_ml,
       nome_tamanho,
       preco_centavos
     };
-    return new Produto(0, nome, descricao, disponivel, ordem_exibicao, [variacao]);
+    return new Produto(0, nome, descricao, disponivel, ordem_exibicao, [variacao], imagem_url);
   }
 
   getId() {
@@ -78,6 +80,10 @@ export default class Produto {
     return this.variacoes.length > 0 ? this.variacoes[0].preco_centavos : 0;
   }
 
+  getImagemUrl() {
+    return this.imagem_url;
+  }
+
   toJSON() {
     return {
       id: this.id,
@@ -85,11 +91,12 @@ export default class Produto {
       descricao: this.descricao,
       disponivel: this.disponivel,
       ordem_exibicao: this.ordem_exibicao,
-      variacoes: this.variacoes
+      variacoes: this.variacoes,
+      imagem_url: this.imagem_url
     };
   }
 
   toString() {
-    return `${this.nome} - ${this.descricao} - ${this.disponivel ? "Disponível" : "Indisponível"} - Ordem de exibição: ${this.ordem_exibicao}`;
+    return `${this.nome} - ${this.descricao} - ${this.disponivel ? "Disponível" : "Indisponível"} - Ordem de exibição: ${this.ordem_exibicao} - Imagem: ${this.imagem_url}`;
   }
 }

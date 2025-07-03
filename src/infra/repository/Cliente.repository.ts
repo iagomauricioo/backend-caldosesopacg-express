@@ -21,12 +21,18 @@ export class ClienteRepositoryDatabase implements ClienteRepository {
 		Logger.getInstance().debug("SQL Query", { query, params });
 		const [clienteData] = await this.connection?.query(query, params);
 		if (!clienteData) return;
-		return new Cliente(clienteData.id, clienteData.nome, clienteData.telefone, clienteData.endereco);
+		
+		if (!clienteData.nome || !clienteData.cpf || !clienteData.telefone) {
+			Logger.getInstance().debug("Dados do cliente incompletos", { clienteData });
+			return;
+		}
+		
+		return new Cliente(clienteData.id, clienteData.nome, clienteData.cpf, clienteData.telefone);
 	}
 	
 	async salvarCliente (cliente: Cliente) {
-		const query = "insert into clientes (id, nome, telefone) values ($1, $2, $3) returning id, nome, telefone";
-		const params = [cliente.getClienteId(), cliente.getNome(), cliente.getTelefone()];
+		const query = "insert into clientes (id, nome, cpf, telefone) values ($1, $2, $3, $4) returning id, nome, cpf, telefone";
+		const params = [cliente.getClienteId(), cliente.getNome(), cliente.getCpf(), cliente.getTelefone()];
 		Logger.getInstance().debug("SQL Query", { query, params });
 		const [result] = await this.connection?.query(query, params);
 		return { id: result.id };
@@ -34,7 +40,13 @@ export class ClienteRepositoryDatabase implements ClienteRepository {
 	
 	async buscarClientePorId (clienteId: string) {
 		const [clienteData] = await this.connection?.query("select * from clientes where id = $1", [clienteId]);
-		return new Cliente(clienteData.id, clienteData.nome, clienteData.telefone, clienteData.endereco);
+		
+		// Validar se os campos obrigatórios existem
+		if (!clienteData.nome || !clienteData.cpf || !clienteData.telefone) {
+			throw new Error("Dados do cliente incompletos");
+		}
+		
+		return new Cliente(clienteData.id, clienteData.nome, clienteData.cpf, clienteData.telefone);
 	}
 }
 

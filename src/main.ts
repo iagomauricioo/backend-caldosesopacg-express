@@ -56,4 +56,4 @@ Registry.getInstance().provide("cepController", new CepController());
 Registry.getInstance().provide("cobrancaController", new CobrancaController());
 Registry.getInstance().provide("healthController", new HealthController());
 
-httpServer.listen(3000);
+httpServer.listen(8080);

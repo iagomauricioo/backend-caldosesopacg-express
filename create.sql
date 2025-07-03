@@ -18,6 +18,7 @@ CREATE TABLE produtos (
     descricao TEXT,
     disponivel BOOLEAN DEFAULT true,
     ordem_exibicao INTEGER DEFAULT 0,
+    imagem_url TEXT,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -50,6 +51,7 @@ CREATE TABLE clientes (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     telefone VARCHAR(15) UNIQUE NOT NULL,
     nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(11) NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_ultimo_pedido TIMESTAMP
 );
