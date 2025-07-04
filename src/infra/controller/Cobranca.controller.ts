@@ -4,6 +4,7 @@ import { AsaasCobranca } from "../gateway/Asaas.gateway";
 import { HttpResponse } from "../http/HttpResponse";
 import GerarCobranca from "../../application/usecase/GerarCobranca";
 import BuscarQrCodePix from "../../application/usecase/BuscarQrCodePix";
+import ReceberWebhookCobranca from "../../application/usecase/ReceberWebhookCobranca";
 
 export default class CobrancaController {
 	@inject("httpServer")
@@ -12,9 +13,12 @@ export default class CobrancaController {
 	gerarCobranca?: GerarCobranca;
 	@inject("buscarQrCodePix")
 	buscarQrCodePix?: BuscarQrCodePix;
-	
+	@inject("receberWebhookCobranca")
+	receberWebhookCobranca?: ReceberWebhookCobranca;
+
 	constructor () {
 		this.rotaGerarCobranca();
+		this.rotaWebhookCobranca();
 	}
 
 	private rotaGerarCobranca(): void {
@@ -36,6 +40,16 @@ export default class CobrancaController {
             }
             return HttpResponse.success(output, "Cobranca encontrada com sucesso");
         });
+	}
+
+	private rotaWebhookCobranca(): void {
+		this.httpServer?.register("post", "/cobranca/webhook", async (params: any, body: any) => {
+			const output = await this.receberWebhookCobranca?.execute(body);
+			if (!output) {
+				return HttpResponse.internalServerError("Erro ao processar webhook");
+			}
+			return HttpResponse.success(output, "Webhook processado com sucesso");
+		});
 	}
 }
 
