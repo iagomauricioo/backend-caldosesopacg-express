@@ -5,6 +5,7 @@ import { HttpResponse } from "../http/HttpResponse";
 import GerarCobranca from "../../application/usecase/GerarCobranca";
 import BuscarQrCodePix from "../../application/usecase/BuscarQrCodePix";
 import ReceberWebhookCobranca from "../../application/usecase/ReceberWebhookCobranca";
+import Logger from "../logger/Logger";
 
 export default class CobrancaController {
 	@inject("httpServer")
@@ -23,32 +24,47 @@ export default class CobrancaController {
 
 	private rotaGerarCobranca(): void {
 		this.httpServer?.register("post", "/cobranca", async (params: any, body: AsaasCobranca) => {
-			const agora = new Date();
-			const dataVencimento = new Date(agora.getTime() + 5 * 60 * 1000); // +5 minutos
-			body.dueDate = dataVencimento;
-			const output = await this.gerarCobranca?.execute(body);
-			if (!output) {
-				return HttpResponse.internalServerError("Erro ao gerar cobranca");
+			try {
+				const agora = new Date();
+				const dataVencimento = new Date(agora.getTime() + 5 * 60 * 1000); // +5 minutos
+				body.dueDate = dataVencimento;
+				const output = await this.gerarCobranca?.execute(body);
+				if (!output) {
+					return HttpResponse.internalServerError("Erro ao gerar cobranca");
+				}
+				return HttpResponse.created(output, "Cobranca gerada com sucesso");
+			} catch (error) {
+				Logger.getInstance().debug("Erro ao gerar cobranca", error);
+				return HttpResponse.internalServerError("Erro ao gerar cobranca", error instanceof Error ? error.message : error);
 			}
-			return HttpResponse.created(output, "Cobranca gerada com sucesso");
 		});
 
         this.httpServer?.register("get", "/cobranca/pixQrCode/:id", async (params: any, body: AsaasCobranca) => {
-            const output = await this.buscarQrCodePix?.execute(params.id);
-            if (!output) {
-                return HttpResponse.notFound("Cobranca não encontrada");
+            try {
+                const output = await this.buscarQrCodePix?.execute(params.id);
+                if (!output) {
+                    return HttpResponse.notFound("Cobranca não encontrada");
+                }
+                return HttpResponse.success(output, "Cobranca encontrada com sucesso");
+            } catch (error) {
+                Logger.getInstance().debug("Erro ao buscar QRCode Pix", error);
+                return HttpResponse.internalServerError("Erro ao buscar QRCode Pix", error instanceof Error ? error.message : error);
             }
-            return HttpResponse.success(output, "Cobranca encontrada com sucesso");
         });
 	}
 
 	private rotaWebhookCobranca(): void {
 		this.httpServer?.register("post", "/cobranca/webhook", async (params: any, body: any) => {
-			const output = await this.receberWebhookCobranca?.execute(body);
-			if (!output) {
-				return HttpResponse.internalServerError("Erro ao processar webhook");
+			try {
+				const output = await this.receberWebhookCobranca?.execute(body);
+				if (!output) {
+					return HttpResponse.internalServerError("Erro ao processar webhook");
+				}
+				return HttpResponse.success(output, "Webhook processado com sucesso");
+			} catch (error) {
+				Logger.getInstance().debug("Erro ao processar webhook de cobranca", error);
+				return HttpResponse.internalServerError("Erro ao processar webhook de cobranca", error instanceof Error ? error.message : error);
 			}
-			return HttpResponse.success(output, "Webhook processado com sucesso");
 		});
 	}
 }
