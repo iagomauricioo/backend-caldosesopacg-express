@@ -71,8 +71,6 @@ export default class Endereco {
 
 	toJSON() {
 		return {
-			id: this.id,
-			clienteId: this.clienteId.getValue(),
 			rua: this.rua,
 			numero: this.numero.getValue(),
 			complemento: this.complemento,

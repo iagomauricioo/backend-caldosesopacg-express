@@ -19,6 +19,9 @@ export default class CobrancaController {
 
 	private rotaGerarCobranca(): void {
 		this.httpServer?.register("post", "/cobranca", async (params: any, body: AsaasCobranca) => {
+			const agora = new Date();
+			const dataVencimento = new Date(agora.getTime() + 5 * 60 * 1000); // +5 minutos
+			body.dueDate = dataVencimento;
 			const output = await this.gerarCobranca?.execute(body);
 			if (!output) {
 				return HttpResponse.internalServerError("Erro ao gerar cobranca");

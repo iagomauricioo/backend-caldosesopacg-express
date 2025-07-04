@@ -3,7 +3,7 @@ import RegistrarCliente from "../../application/usecase/RegistrarCliente";
 import { inject } from "../di/DI";
 import HttpServer from "../http/HttpServer";
 import RegistrarClienteNoAsaas from "../../application/usecase/RegistrarClienteNoAsaas";
-import { AsaasCliente } from "../gateway/Asaas.gateway";
+import { AsaasCliente, AsaasGateway } from "../gateway/Asaas.gateway";
 import { HttpResponse } from "../http/HttpResponse";
 
 export default class ClienteController {
@@ -15,11 +15,14 @@ export default class ClienteController {
 	registrarCliente?: RegistrarCliente;
 	@inject("registrarClienteNoAsaas")
 	registrarClienteNoAsaas?: RegistrarClienteNoAsaas;
-	
+	@inject("asaasGateway")
+	asaasGateway?: AsaasGateway;
+
 	constructor () {
 		this.rotaBuscarCliente();
 		this.rotaRegistrarCliente();
 		this.rotaRegistrarClienteAsaas();
+		this.rotaBuscarClientePorExternalReference();
 	}
 
 	private rotaBuscarCliente(): void {
@@ -49,6 +52,16 @@ export default class ClienteController {
 					return HttpResponse.internalServerError("Erro ao cadastrar cliente no ASAAS");
 				}
 				return HttpResponse.created(output, "Cliente cadastrado no ASAAS com sucesso");
+		});
+	}
+
+	private rotaBuscarClientePorExternalReference(): void {
+		this.httpServer?.register("get", "/clientes/asaas/:externalReference", async (params: any, body: any) => {
+			const output = await this.asaasGateway?.buscarClientePorExternalReference(params.externalReference);
+			if (!output) {
+				return HttpResponse.notFound("Cliente com externalReference " + params.externalReference + " não encontrado");
+			}
+			return HttpResponse.success(output, "Cliente encontrado com sucesso");
 		});
 	}
 }
