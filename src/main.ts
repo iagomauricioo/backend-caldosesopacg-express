@@ -20,6 +20,7 @@ import CobrancaController from "./infra/controller/Cobranca.controller";
 import GerarCobranca from "./application/usecase/GerarCobranca";
 import BuscarQrCodePix from "./application/usecase/BuscarQrCodePix";
 import HealthController from "./infra/controller/Health.controller";
+import ReceberWebhookCobranca from "./application/usecase/ReceberWebhookCobranca";
 
 // Configurar logger para exibir SQL
 Logger.getInstance().setLevel("debug");
@@ -47,6 +48,7 @@ Registry.getInstance().provide("buscarCep", new BuscarCep());
 Registry.getInstance().provide("registrarClienteNoAsaas", new RegistrarClienteNoAsaas());
 Registry.getInstance().provide("gerarCobranca", new GerarCobranca());
 Registry.getInstance().provide("buscarQrCodePix", new BuscarQrCodePix());
+Registry.getInstance().provide("receberWebhookCobranca", new ReceberWebhookCobranca());
 
 // Controller
 Registry.getInstance().provide("clienteController", new ClienteController());
