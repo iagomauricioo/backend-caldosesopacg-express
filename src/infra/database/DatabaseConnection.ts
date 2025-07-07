@@ -9,7 +9,7 @@ export class PgPromiseAdapter implements DatabaseConnection {
 	connection: any;
 
 	constructor () {
-		this.connection = pgp()("postgres://postgres:123456@localhost:5432/app");
+		this.connection = pgp()(`postgres://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`);
 	}
 
 	query(statement: string, params: any): Promise<any> {
