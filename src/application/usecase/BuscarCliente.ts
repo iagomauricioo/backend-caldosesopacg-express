@@ -1,4 +1,5 @@
 import { inject } from "../../infra/di/DI";
+import { NotFoundError } from "../../infra/http/ApiError";
 import ClienteRepository from "../../infra/repository/Cliente.repository";
 
 export default class BuscarCliente {
@@ -7,7 +8,7 @@ export default class BuscarCliente {
 
 	async execute (telefone: string) {
 		const cliente = await this.clienteRepository?.buscarClientePorTelefone(telefone);
-		if (!cliente) throw new Error("Cliente não encontrado");
+		if (!cliente) throw new NotFoundError("Cliente não encontrado");
 		return {
 			clienteId: cliente.getClienteId(),
 			nome: cliente.getNome(),

@@ -31,20 +31,10 @@ export default class ClienteController {
 		this.httpServer?.register("get", "/clientes/:telefone", async (params: any, body: any) => {
 			try {
 				const output = await this.buscarCliente?.execute(params.telefone);
-				if (!output) {
-					return HttpResponse.notFound("Cliente com telefone " + params.telefone + " não encontrado");
-				}
 				return HttpResponse.success(output, "Cliente encontrado com sucesso");
 			} catch (error: any) {
-				Logger.getInstance().debug("Erro ao buscar cliente", error);
-				if (error instanceof ApiError) {
-					return {
-						success: false,
-						statusCode: error.statusCode,
-						message: error.message,
-						details: error.details,
-						timestamp: new Date().toISOString()
-					};
+				if (error instanceof NotFoundError) {
+					return HttpResponse.notFound("Cliente com telefone " + params.telefone + " não encontrado");
 				}
 				return HttpResponse.internalServerError("Erro ao buscar cliente", error instanceof Error ? error.message : error);
 			}
