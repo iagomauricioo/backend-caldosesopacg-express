@@ -307,7 +307,7 @@
 								"method": "POST",
 								"header": [
 									{
-										"key": "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6Ojg1MzI4ZmRiLWNiMmQtNDgwYi1hNWQ1LTA1ZjYzYjFlOTUzMjo6JGFhY2hfYmJiN2Y3MDMtNTBkOS00MTk2LWJkODEtNWJhNTI5Mzg5ZDRj",
+										"key": "token_aqui",
 										"value": "",
 										"type": "text"
 									}
@@ -333,7 +333,7 @@
 									"query": [
 										{
 											"key": "acess_token",
-											"value": "$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6Ojg1MzI4ZmRiLWNiMmQtNDgwYi1hNWQ1LTA1ZjYzYjFlOTUzMjo6JGFhY2hfYmJiN2Y3MDMtNTBkOS00MTk2LWJkODEtNWJhNTI5Mzg5ZDRj",
+											"value": "token_aqui",
 											"disabled": true
 										}
 									]
