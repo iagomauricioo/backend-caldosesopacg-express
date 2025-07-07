@@ -33,8 +33,19 @@ export default class CobrancaController {
 					return HttpResponse.internalServerError("Erro ao gerar cobranca");
 				}
 				return HttpResponse.created(output, "Cobranca gerada com sucesso");
-			} catch (error) {
+			} catch (error: any) {
 				Logger.getInstance().debug("Erro ao gerar cobranca", error);
+
+				// Se for erro de integração externa (ex: axios)
+				if (error.isAxiosError || error.response) {
+					return HttpResponse.externalServiceError(
+						"Asaas",
+						error.response?.status || 502,
+						error.message,
+						error.response?.data
+					);
+				}
+
 				return HttpResponse.internalServerError("Erro ao gerar cobranca", error instanceof Error ? error.message : error);
 			}
 		});

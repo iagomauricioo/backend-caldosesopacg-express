@@ -37,7 +37,7 @@ export class HttpResponse {
     return {
       success: false,
       statusCode: 401,
-      message,
+      message: message || "Não autorizado",
       error: "Unauthorized",
       timestamp: new Date().toISOString()
     };
@@ -47,7 +47,7 @@ export class HttpResponse {
     return {
       success: false,
       statusCode: 403,
-      message,
+      message: message || "Acesso negado",
       error: "Forbidden",
       timestamp: new Date().toISOString()
     };
@@ -57,7 +57,7 @@ export class HttpResponse {
     return {
       success: false,
       statusCode: 404,
-      message,
+      message: message || "Recurso não encontrado",
       error: "Not Found",
       timestamp: new Date().toISOString()
     };
@@ -68,7 +68,7 @@ export class HttpResponse {
       success: false,
       statusCode: 409,
       message: "Conflito de dados",
-      error: message,
+      error: message || "Conflito de dados",
       details,
       timestamp: new Date().toISOString()
     };
@@ -79,7 +79,7 @@ export class HttpResponse {
       success: false,
       statusCode: 422,
       message: "Dados inválidos para processamento",
-      error: message,
+      error: message || "Dados inválidos para processamento",
       details,
       timestamp: new Date().toISOString()
     };
@@ -89,7 +89,7 @@ export class HttpResponse {
     return {
       success: false,
       statusCode: 429,
-      message,
+      message: message || "Limite de requisições excedido",
       error: "Too Many Requests",
       timestamp: new Date().toISOString()
     };
@@ -99,7 +99,7 @@ export class HttpResponse {
     return {
       success: false,
       statusCode: 500,
-      message,
+      message: message || "Erro interno do servidor",
       error: "Internal Server Error",
       details,
       timestamp: new Date().toISOString()
@@ -110,7 +110,7 @@ export class HttpResponse {
     return {
       success: false,
       statusCode: 503,
-      message,
+      message: message || "Serviço temporariamente indisponível",
       error: "Service Unavailable",
       timestamp: new Date().toISOString()
     };
@@ -122,7 +122,7 @@ export class HttpResponse {
       success: false,
       statusCode,
       message: `Erro na comunicação com ${service}`,
-      error: message,
+      error: message || `Erro na comunicação com ${service}`,
       details,
       timestamp: new Date().toISOString()
     };
