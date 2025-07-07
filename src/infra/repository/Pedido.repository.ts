@@ -8,7 +8,7 @@ import { NotFoundError } from "../http/ApiError";
 export default interface PedidoRepository {
 	buscarTodosPedidos (): Promise<Pedido[]>;
 	buscarPedidoPorId (id: number): Promise<Pedido>;
-	buscarStatusDePedidoPorId (id: number): Promise<any>;
+	buscarStatusDePedidoPorId (id: number): Promise<{id: number, status: string}>;
 }
 
 // Adapter
@@ -19,9 +19,9 @@ export class PedidoRepositoryDatabase implements PedidoRepository {
 	async buscarTodosPedidos (): Promise<Pedido[]> {
 		const query = "select * from pedidos";
 		Logger.getInstance().debug("SQL Query", { query });
-		const [pedidoData] = await this.connection?.query(query, []) as Pedido[];
-		if (!pedidoData) throw new NotFoundError("Pedido não encontrado");
-		return [pedidoData];
+		const pedidosData = await this.connection?.query(query, []) as Pedido[];
+		if (!pedidosData || pedidosData.length === 0) throw new NotFoundError("Pedidos não encontrados");
+		return pedidosData;
 	}
 
 	async buscarPedidoPorId (id: number): Promise<Pedido> {
@@ -32,11 +32,11 @@ export class PedidoRepositoryDatabase implements PedidoRepository {
 		return pedidoData;
 	}
 
-	async buscarStatusDePedidoPorId(id: number): Promise<Pedido> {
+	async buscarStatusDePedidoPorId(id: number): Promise<{id: number, status: string}> {
 		const query = "select id, status from pedidos where id = $1";
 		Logger.getInstance().debug("SQL Query", { query, params: [id] });
-		const [pedidoData] = await this.connection?.query(query, [id]) as Pedido[];
+		const [pedidoData] = await this.connection?.query(query, [id]) as any[];
 		if (!pedidoData) throw new NotFoundError("Pedido não encontrado");
-		return pedidoData;
+		return { id: pedidoData.id, status: pedidoData.status };
 	}
 }
