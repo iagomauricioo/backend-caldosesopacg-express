@@ -6,6 +6,7 @@ import GerarCobranca from "../../application/usecase/GerarCobranca";
 import BuscarQrCodePix from "../../application/usecase/BuscarQrCodePix";
 import ReceberWebhookCobranca from "../../application/usecase/ReceberWebhookCobranca";
 import Logger from "../logger/Logger";
+import { ApiError, NotFoundError } from "../http/ApiError";
 
 export default class CobrancaController {
 	@inject("httpServer")
@@ -30,13 +31,12 @@ export default class CobrancaController {
 				body.dueDate = dataVencimento;
 				const output = await this.gerarCobranca?.execute(body);
 				if (!output) {
-					return HttpResponse.internalServerError("Erro ao gerar cobranca");
+					throw new ApiError("Erro ao gerar cobranca", 500);
 				}
 				return HttpResponse.created(output, "Cobranca gerada com sucesso");
 			} catch (error: any) {
 				Logger.getInstance().debug("Erro ao gerar cobranca", error);
 
-				// Se for erro de integração externa (ex: axios)
 				if (error.isAxiosError || error.response) {
 					return HttpResponse.externalServiceError(
 						"Asaas",
@@ -45,7 +45,15 @@ export default class CobrancaController {
 						error.response?.data
 					);
 				}
-
+				if (error instanceof ApiError) {
+					return {
+						success: false,
+						statusCode: error.statusCode,
+						message: error.message,
+						details: error.details,
+						timestamp: new Date().toISOString()
+					};
+				}
 				return HttpResponse.internalServerError("Erro ao gerar cobranca", error instanceof Error ? error.message : error);
 			}
 		});
@@ -54,11 +62,20 @@ export default class CobrancaController {
             try {
                 const output = await this.buscarQrCodePix?.execute(params.id);
                 if (!output) {
-                    return HttpResponse.notFound("Cobranca não encontrada");
+                    throw new NotFoundError("Cobranca não encontrada");
                 }
                 return HttpResponse.success(output, "Cobranca encontrada com sucesso");
-            } catch (error) {
+            } catch (error: any) {
                 Logger.getInstance().debug("Erro ao buscar QRCode Pix", error);
+                if (error instanceof ApiError) {
+                    return {
+                        success: false,
+                        statusCode: error.statusCode,
+                        message: error.message,
+                        details: error.details,
+                        timestamp: new Date().toISOString()
+                    };
+                }
                 return HttpResponse.internalServerError("Erro ao buscar QRCode Pix", error instanceof Error ? error.message : error);
             }
         });
@@ -69,11 +86,20 @@ export default class CobrancaController {
 			try {
 				const output = await this.receberWebhookCobranca?.execute(body);
 				if (!output) {
-					return HttpResponse.internalServerError("Erro ao processar webhook");
+					throw new ApiError("Erro ao processar webhook", 500);
 				}
 				return HttpResponse.success(output, "Webhook processado com sucesso");
-			} catch (error) {
+			} catch (error: any) {
 				Logger.getInstance().debug("Erro ao processar webhook de cobranca", error);
+				if (error instanceof ApiError) {
+					return {
+						success: false,
+						statusCode: error.statusCode,
+						message: error.message,
+						details: error.details,
+						timestamp: new Date().toISOString()
+					};
+				}
 				return HttpResponse.internalServerError("Erro ao processar webhook de cobranca", error instanceof Error ? error.message : error);
 			}
 		});
