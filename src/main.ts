@@ -21,6 +21,9 @@ import GerarCobranca from "./application/usecase/GerarCobranca";
 import BuscarQrCodePix from "./application/usecase/BuscarQrCodePix";
 import HealthController from "./infra/controller/Health.controller";
 import ReceberWebhookCobranca from "./application/usecase/ReceberWebhookCobranca";
+import { PedidoRepositoryDatabase } from "./infra/repository/Pedido.repository";
+import BuscarPedidos from "./application/usecase/BuscarPedidos";
+import PedidoController from "./infra/controller/Pedido.controller";
 
 // Configurar logger para exibir SQL
 Logger.getInstance().setLevel("debug");
@@ -39,6 +42,7 @@ Registry.getInstance().provide("databaseConnection", new PgPromiseAdapter());
 Registry.getInstance().provide("clienteRepository", new ClienteRepositoryDatabase());
 Registry.getInstance().provide("enderecoRepository", new EnderecoRepositoryDatabase());
 Registry.getInstance().provide("produtoRepository", new ProdutoRepositoryDatabase());
+Registry.getInstance().provide("pedidoRepository", new PedidoRepositoryDatabase());
 
 // Usecase
 Registry.getInstance().provide("buscarCliente", new BuscarCliente());
@@ -49,6 +53,7 @@ Registry.getInstance().provide("registrarClienteNoAsaas", new RegistrarClienteNo
 Registry.getInstance().provide("gerarCobranca", new GerarCobranca());
 Registry.getInstance().provide("buscarQrCodePix", new BuscarQrCodePix());
 Registry.getInstance().provide("receberWebhookCobranca", new ReceberWebhookCobranca());
+Registry.getInstance().provide("buscarPedidos", new BuscarPedidos());
 
 // Controller
 Registry.getInstance().provide("clienteController", new ClienteController());
@@ -57,5 +62,6 @@ Registry.getInstance().provide("produtoController", new ProdutoController());
 Registry.getInstance().provide("cepController", new CepController());
 Registry.getInstance().provide("cobrancaController", new CobrancaController());
 Registry.getInstance().provide("healthController", new HealthController());
+Registry.getInstance().provide("pedidoController", new PedidoController());
 
 httpServer.listen(8080);

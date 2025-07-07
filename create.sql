@@ -82,7 +82,7 @@ CREATE TABLE pedidos (
     total_centavos INTEGER NOT NULL,
     
     -- Forma de pagamento
-    forma_pagamento VARCHAR(20) NOT NULL CHECK (forma_pagamento IN ('dinheiro', 'pix', 'cartao_credito', 'cartao_debito')),
+    forma_pagamento VARCHAR(20) NOT NULL CHECK (forma_pagamento IN ('DINHEIRO', 'PIX', 'CREDIT_CARD')),
     troco_para_centavos INTEGER, -- Se pagamento for dinheiro
     
     -- Status e controle
@@ -155,7 +155,7 @@ CREATE TABLE pagamentos (
     asaas_customer_id VARCHAR(100), -- ID do cliente na ASAAS
     
     -- Dados do pagamento
-    tipo_pagamento VARCHAR(20) NOT NULL CHECK (tipo_pagamento IN ('pix', 'dinheiro', 'cartao_credito', 'cartao_debito')),
+    tipo_pagamento VARCHAR(20) NOT NULL CHECK (tipo_pagamento IN ('PIX', 'DINHEIRO', 'CREDIT_CARD')),
     valor_centavos INTEGER NOT NULL,
     
     -- Status do pagamento
@@ -192,13 +192,13 @@ INSERT INTO categorias (nome, ordem_exibicao) VALUES
     ('Acompanhamentos', 4);
 
 -- Produtos
-INSERT INTO produtos (categoria_id, nome, descricao, ordem_exibicao) VALUES 
-    (1, 'Caldo de Frango', 'Caldo tradicional de frango', 1),
-    (1, 'Caldo de Kenga', 'Caldo com frango, calabresa e bacon', 2),
-    (1, 'Caldo de Camarão', 'Caldo cremoso de camarão', 3),
-    (1, 'Caldo de Charque', 'Caldo saboroso de charque', 4),
-    (2, 'Sopa de Feijão com Carne', 'Sopa nutritiva de feijão com carne', 1),
-    (3, 'Canja de Galinha', 'Canja tradicional de galinha', 1);
+INSERT INTO produtos (categoria_id, nome, descricao, ordem_exibicao, imagem_url) VALUES 
+    (1, 'Caldo de Frango', 'Caldo tradicional de frango', 1, '/images/caldos/caldo-de-galinha.png'),
+    (1, 'Caldo de Kenga', 'Caldo com frango, calabresa e bacon', 2, '/images/caldos/caldo-de-kenga.png'),
+    (1, 'Caldo de Camarão', 'Caldo cremoso de camarão', 3, '/images/caldos/caldo-de-charque.jpeg'),
+    (1, 'Caldo de Charque', 'Caldo saboroso de charque', 4, '/images/caldos/caldo-de-feijao.png'),
+    (2, 'Sopa de Feijão com Carne', 'Sopa nutritiva de feijão com carne', 1, '/images/sopas/sopa-de-feijao-com-carne.png'),
+    (3, 'Canja de Galinha', 'Canja tradicional de galinha', 1, '/images/canjas/canja-de-galinha.png');
 
 -- Variações de produtos (preços em centavos)
 INSERT INTO variacoes_produto (produto_id, tamanho_ml, nome_tamanho, preco_centavos) VALUES 
@@ -236,6 +236,213 @@ INSERT INTO configuracoes (chave, valor, descricao) VALUES
     ('endereco_loja', 'São Miguel dos Campos, AL', 'Endereço da loja'),
     ('tempo_preparo_minutos', '30', 'Tempo estimado de preparo'),
     ('asaas_api_key', '', 'Chave da API do ASAAS para pagamentos');
+
+-- INSERT na tabela pedidos com os IDs fornecidos
+-- ========================================
+-- INSERINDO DADOS DE TESTE COMPLETOS
+-- ========================================
+
+-- 1. Inserir cliente de teste
+INSERT INTO clientes (
+    id,
+    telefone,
+    nome,
+    cpf,
+    data_criacao
+) VALUES (
+    '6b0aa2c2-d561-4837-a696-eca127ab3e95',
+    '82999999999',
+    'João Silva Santos',
+    '12345678901',
+    CURRENT_TIMESTAMP
+);
+
+-- 2. Inserir endereço do cliente
+INSERT INTO enderecos_cliente (
+    id,
+    cliente_id,
+    rua,
+    numero,
+    complemento,
+    bairro,
+    ponto_referencia,
+    endereco_principal,
+    cep,
+    data_criacao
+) VALUES (
+    1,
+    '6b0aa2c2-d561-4837-a696-eca127ab3e95',
+    'Rua das Flores',
+    '123',
+    'Apt 101',
+    'Centro',
+    'Próximo ao mercado São Jorge',
+    true,
+    '57240000',
+    CURRENT_TIMESTAMP
+);
+
+-- ========================================
+-- INSERINDO PEDIDOS DE TESTE
+-- ========================================
+-- 3. PEDIDO 1 - PIX
+INSERT INTO pedidos (
+    cliente_id,
+    endereco_id,
+    subtotal_centavos,
+    taxa_entrega_centavos,
+    total_centavos,
+    forma_pagamento,
+    troco_para_centavos,
+    status,
+    observacoes,
+    data_pedido,
+    pagamento_status
+) VALUES (
+    '6b0aa2c2-d561-4837-a696-eca127ab3e95',  -- cliente_id
+    1,                                        -- endereco_id
+    3400,                                     -- subtotal_centavos (R$ 34,00)
+    300,                                      -- taxa_entrega_centavos (R$ 3,00)
+    3700,                                     -- total_centavos (R$ 37,00)
+    'pix',                                    -- forma_pagamento
+    NULL,                                     -- troco_para_centavos (só para dinheiro)
+    'recebido',                               -- status
+    'Caldo bem quente, por favor',            -- observacoes
+    CURRENT_TIMESTAMP,                        -- data_pedido
+    'pendente'                                -- pagamento_status
+);
+
+-- 4. PEDIDO 2 - DINHEIRO (com troco)
+INSERT INTO pedidos (
+    cliente_id,
+    endereco_id,
+    subtotal_centavos,
+    taxa_entrega_centavos,
+    total_centavos,
+    forma_pagamento,
+    troco_para_centavos,
+    status,
+    observacoes,
+    pagamento_status
+) VALUES (
+    '6b0aa2c2-d561-4837-a696-eca127ab3e95',
+    1,
+    3400,     -- R$ 34,00
+    300,      -- R$ 3,00  
+    3700,     -- R$ 37,00
+    'dinheiro',
+    5000,     -- Troco para R$ 50,00
+    'recebido',
+    'Cliente vai pagar com R$ 50,00',
+    'pendente'
+);
+
+-- 5. PEDIDO 3 - CARTÃO DE CRÉDITO
+INSERT INTO pedidos (
+    cliente_id,
+    endereco_id,
+    subtotal_centavos,
+    taxa_entrega_centavos,
+    total_centavos,
+    forma_pagamento,
+    status,
+    observacoes,
+    pagamento_id,
+    pagamento_status
+) VALUES (
+    '6b0aa2c2-d561-4837-a696-eca127ab3e95',
+    1,
+    3400,
+    300,
+    3700,
+    'cartao_credito',
+    'recebido',
+    'Pagamento no cartão de crédito',
+    'asaas_pay_123456789',  -- ID do gateway
+    'aprovado'              -- Já aprovado pelo gateway
+);
+
+-- ========================================
+-- INSERINDO ITENS DOS PEDIDOS
+-- ========================================
+
+-- Itens do PEDIDO 1 (PIX) - 2x Caldo de Kenga 500ml
+INSERT INTO itens_pedido (
+    pedido_id,
+    produto_id,
+    variacao_id,
+    nome_produto,
+    tamanho_ml,
+    preco_unitario_centavos,
+    quantidade,
+    subtotal_centavos,
+    observacoes
+) VALUES (
+    (SELECT id FROM pedidos WHERE cliente_id = '6b0aa2c2-d561-4837-a696-eca127ab3e95' AND forma_pagamento = 'pix' LIMIT 1),
+    2,  -- Caldo de Kenga
+    4,  -- Variação 500ml 
+    'Caldo de Kenga',
+    500,
+    1700,  -- R$ 17,00
+    2,     -- quantidade
+    3400,  -- 2 x R$ 17,00
+    'Bem temperado'
+);
+
+-- Itens do PEDIDO 2 (DINHEIRO) - 1x Caldo de Camarão 500ml + 1x Caldo de Frango 500ml  
+INSERT INTO itens_pedido (
+    pedido_id,
+    produto_id,
+    variacao_id,
+    nome_produto,
+    tamanho_ml,
+    preco_unitario_centavos,
+    quantidade,
+    subtotal_centavos
+) VALUES 
+-- Caldo de Camarão
+(
+    (SELECT id FROM pedidos WHERE cliente_id = '6b0aa2c2-d561-4837-a696-eca127ab3e95' AND forma_pagamento = 'dinheiro' LIMIT 1),
+    3,  -- Caldo de Camarão
+    6,  -- Variação 500ml
+    'Caldo de Camarão',
+    500,
+    2000,  -- R$ 20,00
+    1,
+    2000
+),
+-- Caldo de Frango  
+(
+    (SELECT id FROM pedidos WHERE cliente_id = '6b0aa2c2-d561-4837-a696-eca127ab3e95' AND forma_pagamento = 'dinheiro' LIMIT 1),
+    1,  -- Caldo de Frango
+    2,  -- Variação 500ml
+    'Caldo de Frango',
+    500,
+    1400,  -- R$ 14,00
+    1,
+    1400
+);
+
+-- Itens do PEDIDO 3 (CARTÃO) - 2x Caldo de Kenga 500ml
+INSERT INTO itens_pedido (
+    pedido_id,
+    produto_id,
+    variacao_id,
+    nome_produto,
+    tamanho_ml,
+    preco_unitario_centavos,
+    quantidade,
+    subtotal_centavos
+) VALUES (
+    (SELECT id FROM pedidos WHERE cliente_id = '6b0aa2c2-d561-4837-a696-eca127ab3e95' AND forma_pagamento = 'cartao_credito' LIMIT 1),
+    2,  -- Caldo de Kenga
+    4,  -- Variação 500ml
+    'Caldo de Kenga',
+    500,
+    1700,  -- R$ 17,00
+    2,
+    3400
+);
 
 -- Índices para performance
 CREATE INDEX idx_estoque_produto_data ON estoque_diario(produto_id, data_estoque);
