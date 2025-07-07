@@ -56,7 +56,6 @@ export default class ClienteController {
 			try {
 				// Exemplo de validação
 				if (!body.nome) throw new ValidationError("Nome é obrigatório");
-				if (!body.cpf) throw new ValidationError("CPF é obrigatório");
 				if (!body.telefone) throw new ValidationError("Telefone é obrigatório");
 
 				const output = await this.registrarCliente?.execute(body);

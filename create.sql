@@ -51,7 +51,7 @@ CREATE TABLE clientes (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     telefone VARCHAR(15) UNIQUE NOT NULL,
     nome VARCHAR(100) NOT NULL,
-    cpf VARCHAR(11) NOT NULL,
+    cpf VARCHAR(11) UNIQUE,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_ultimo_pedido TIMESTAMP
 );

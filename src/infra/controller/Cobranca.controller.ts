@@ -1,6 +1,6 @@
 import { inject } from "../di/DI";
 import HttpServer from "../http/HttpServer";
-import { AsaasCobranca } from "../gateway/Asaas.gateway";
+import { AsaasCobranca, AsaasGateway, AsaasReceberPagamentoPorQrCodeEstatico } from "../gateway/Asaas.gateway";
 import { HttpResponse } from "../http/HttpResponse";
 import GerarCobranca from "../../application/usecase/GerarCobranca";
 import BuscarQrCodePix from "../../application/usecase/BuscarQrCodePix";
@@ -17,10 +17,14 @@ export default class CobrancaController {
 	buscarQrCodePix?: BuscarQrCodePix;
 	@inject("receberWebhookCobranca")
 	receberWebhookCobranca?: ReceberWebhookCobranca;
+	@inject("asaasGateway")
+	asaasGateway?: AsaasGateway;
 
+	
 	constructor () {
 		this.rotaGerarCobranca();
 		this.rotaWebhookCobranca();
+		this.rotaReceberPagamentoPorQrCodeEstatico();
 	}
 
 	private rotaGerarCobranca(): void {
@@ -79,6 +83,13 @@ export default class CobrancaController {
                 return HttpResponse.internalServerError("Erro ao buscar QRCode Pix", error instanceof Error ? error.message : error);
             }
         });
+	}
+
+	private rotaReceberPagamentoPorQrCodeEstatico(): void {
+		this.httpServer?.register("post", "/cobranca/pix/qrCode/estatico", async (params: any, body: AsaasReceberPagamentoPorQrCodeEstatico) => {
+			const output = await this.asaasGateway?.receberPagamentoPorQrCodeEstatico(body);
+			return HttpResponse.success(output, "Pagamento recebido com sucesso");
+		});
 	}
 
 	private rotaWebhookCobranca(): void {

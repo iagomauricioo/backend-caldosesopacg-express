@@ -8,8 +8,8 @@ export default class ReceberWebhookCobranca {
 
   async execute(input: any) {
     Logger.getInstance().debug("Recebendo webhook de cobranca", { input });
-    const output = await this.asaasGateway?.buscarClientePorExternalReference('a05ca9cb-7dd3-493c-a504-2e3395a72096');
-    Logger.getInstance().debug("Cliente encontrado", { output });
-    return output;
+    return {
+      message: "Webhook recebido com sucesso",
+    };
   }
 }

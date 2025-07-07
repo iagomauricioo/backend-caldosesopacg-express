@@ -7,14 +7,14 @@ import Endereco from "./Endereco.entity";
 export default class Cliente {
 	private clienteId: UUID;
 	private nome: Nome;
-	private cpf: Cpf;
+	private cpf?: Cpf;
 	private telefone: Telefone;
 	private endereco?: Endereco;
 
 	constructor (clienteId: string, nome: string, cpf: string, telefone: string, endereco?: Endereco) {
 		this.clienteId = new UUID(clienteId);
 		this.nome = new Nome(nome);
-		this.cpf = new Cpf(cpf);
+		if (cpf) this.cpf = new Cpf(cpf);
 		this.telefone = new Telefone(telefone);
 		this.endereco = endereco;
 	}
@@ -38,7 +38,7 @@ export default class Cliente {
 	}
 
 	getCpf () {
-		return this.cpf.getValue();
+		return this.cpf?.getValue();
 	}
 
 	getTelefone () {

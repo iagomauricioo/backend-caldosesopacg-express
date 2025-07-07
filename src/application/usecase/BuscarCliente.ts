@@ -12,7 +12,7 @@ export default class BuscarCliente {
 			clienteId: cliente.getClienteId(),
 			nome: cliente.getNome(),
 			telefone: cliente.getTelefone(),
-			cpf: cliente.getCpf()
+			cpf: cliente.getCpf() || null,
 		};
 	}
 }

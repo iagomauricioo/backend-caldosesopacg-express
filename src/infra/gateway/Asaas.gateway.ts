@@ -10,6 +10,7 @@ export interface AsaasGateway {
   realizarCobrancaViaCartaoDeCredito(cobranca: AsaasCobranca): Promise<any>;
   buscarQrCodePix(id: string): Promise<any>;
   buscarClientePorExternalReference(externalReference: string): Promise<any>;
+  receberPagamentoPorQrCodeEstatico(input: AsaasReceberPagamentoPorQrCodeEstatico): Promise<AsaasQrCodeEstatico>;
 }
 
 export class AsaasGatewayHttp implements AsaasGateway {
@@ -68,6 +69,16 @@ export class AsaasGatewayHttp implements AsaasGateway {
     });
     return response.data.data;
   }
+
+  async receberPagamentoPorQrCodeEstatico(input: AsaasReceberPagamentoPorQrCodeEstatico): Promise<AsaasQrCodeEstatico> {
+    if (!this.api_key) throw new Error("ASAAS_API_KEY não configurada");
+    const response = await axios.post(`${this.base_url}/pix/qrCodes/static`, input, {
+      headers: {
+        'access_token': this.api_key,
+      }
+    });
+    return response.data;
+  }
 }
 
 export type AsaasCliente = {
@@ -92,4 +103,23 @@ export type AsaasCobranca = {
     "billingType": AsaasBillingType,
     "value": number,
     "dueDate": Date,
+}
+
+export type AsaasReceberPagamentoPorQrCodeEstatico = {
+    "addressKey": string,
+    "description": string,
+    "value": number,
+    "format": string,
+    "expirationDate": Date,
+    "expirationSeconds": number,
+}
+
+
+export type AsaasQrCodeEstatico = {
+    "id": string,
+    "encodedImage": string,
+    "payload": string,
+    "allowsMultiplePayments": boolean,
+    "expirationDate": Date,
+    "externalReference": string,
 }

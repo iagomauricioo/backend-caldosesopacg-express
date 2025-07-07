@@ -22,11 +22,10 @@ export class ClienteRepositoryDatabase implements ClienteRepository {
 		const [clienteData] = await this.connection?.query(query, params);
 		if (!clienteData) return;
 		
-		if (!clienteData.nome || !clienteData.cpf || !clienteData.telefone) {
+		if (!clienteData.nome || !clienteData.telefone) {
 			Logger.getInstance().debug("Dados do cliente incompletos", { clienteData });
 			return;
 		}
-		
 		return new Cliente(clienteData.id, clienteData.nome, clienteData.cpf, clienteData.telefone);
 	}
 	

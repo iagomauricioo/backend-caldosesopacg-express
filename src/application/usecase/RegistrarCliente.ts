@@ -26,29 +26,12 @@ export default class RegistrarCliente {
     const endereco = Endereco.create(clienteSalvo.id, input.endereco.rua, input.endereco.numero, input.endereco.complemento || "", input.endereco.bairro, input.endereco.cep, input.endereco.pontoReferencia || "", input.endereco.enderecoPrincipal || true);
     await this.enderecoRepository?.salvarEndereco(endereco);
 
-    const clienteAsaas: AsaasCliente = {
-      name: cliente.getNome(),
-      cpfCnpj: cliente.getCpf(),
-      mobilePhone: cliente.getTelefone(),
-      address: endereco.getRua(),
-      addressNumber: endereco.getNumero().getValue(),
-      complement: endereco.getComplemento(),
-      province: endereco.getBairro(),
-      postalCode: endereco.getCep().getValue(),
-      externalReference: clienteSalvo.id,
-    };
-    const clienteAsaasSalvo = await this.asaasGateway?.cadastrarCliente(clienteAsaas);
-    Logger.getInstance().debug("Cliente Asaas salvo", { clienteAsaasSalvo });
-    if (!clienteAsaasSalvo) throw new Error("Erro ao salvar cliente no Asaas");
-
     return {
       clienteId: clienteSalvo.id,
       nome: cliente.getNome(),
       telefone: cliente.getTelefone(),
       enderecoCadastrado: endereco.toJSON(),
-      dataAsaas: clienteAsaasSalvo,
     };
-
   }
 }
 
