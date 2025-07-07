@@ -32,7 +32,7 @@ export default class ClienteController {
 			try {
 				const output = await this.buscarCliente?.execute(params.telefone);
 				if (!output) {
-					throw new NotFoundError("Cliente com telefone " + params.telefone + " não encontrado");
+					return HttpResponse.notFound("Cliente com telefone " + params.telefone + " não encontrado");
 				}
 				return HttpResponse.success(output, "Cliente encontrado com sucesso");
 			} catch (error: any) {
