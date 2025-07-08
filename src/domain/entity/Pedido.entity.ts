@@ -14,6 +14,12 @@ enum Status {
     CANCELADO = "CANCELADO"
 }
 
+enum StatusPagamento {
+    PENDENTE = "PENDENTE",
+    PAGO = "PAGO",
+    CANCELADO = "CANCELADO"
+}
+
 export default class Pedido {
 	private id: number;
 	private clienteId: UUID;
@@ -28,7 +34,7 @@ export default class Pedido {
     private dataPedido: Date;
     private dataEntrega: Date;
     private pagamentoId: string;
-    private pagamentoStatus: string;
+    private pagamentoStatus: StatusPagamento;
 
 	constructor (id: number, clienteId: string, enderecoId: number, subTotalCentavos: number, taxaEntregaCentavos: number, totalCentavos: number, formaPagamento: FormaPagamento, trocoParaCentavos: number, status: Status, observacoes: string, dataPedido: Date, dataEntrega: Date, pagamentoId: string, pagamentoStatus: string) {
 		this.id = id;
@@ -44,10 +50,10 @@ export default class Pedido {
 		this.dataPedido = dataPedido;
 		this.dataEntrega = dataEntrega;
 		this.pagamentoId = pagamentoId;
-		this.pagamentoStatus = pagamentoStatus;
+        this.pagamentoStatus = pagamentoStatus as StatusPagamento;
 	}
 
-	static create (clienteId: string, enderecoId: number, subTotalCentavos: number, taxaEntregaCentavos: number, totalCentavos: number, formaPagamento: FormaPagamento, trocoParaCentavos: number, status: Status, observacoes: string, dataPedido: Date, dataEntrega: Date, pagamentoId: string, pagamentoStatus: string) {
+	static create (clienteId: string, enderecoId: number, subTotalCentavos: number, taxaEntregaCentavos: number, totalCentavos: number, formaPagamento: FormaPagamento, trocoParaCentavos: number, status: Status, observacoes: string, dataPedido: Date, dataEntrega: Date, pagamentoId: string, pagamentoStatus: StatusPagamento) {
 		return new Pedido(0, clienteId, enderecoId, subTotalCentavos, taxaEntregaCentavos, totalCentavos, formaPagamento, trocoParaCentavos, status, observacoes, dataPedido, dataEntrega, pagamentoId, pagamentoStatus);
 	}
 

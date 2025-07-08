@@ -103,6 +103,7 @@ export type AsaasCobranca = {
     "billingType": AsaasBillingType,
     "value": number,
     "dueDate": Date,
+    "externalReference"?: string,
 }
 
 export type AsaasReceberPagamentoPorQrCodeEstatico = {
