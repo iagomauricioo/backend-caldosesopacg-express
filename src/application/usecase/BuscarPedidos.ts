@@ -8,7 +8,7 @@ export default class BuscarPedidos {
 
 	async execute () {
 		const pedidos = await this.pedidoRepository?.buscarTodosPedidos();
-		if (!pedidos) throw new NotFoundError("Pedidos não encontrados");
+		if (!pedidos || pedidos.length === 0) throw new NotFoundError("Pedidos não encontrados");
 		return {
 			pedidos: pedidos,
 		};

@@ -23,9 +23,9 @@ export default class ReceberWebhookCobranca {
     if (!pedido) {
       throw new NotFoundError("Pedido não encontrado");
     }
-    await this.pedidoRepository?.atualizarStatusDePedidoPorId(pedido.getId(), "aprovado");
+    await this.pedidoRepository?.atualizarStatusDePedidoPorId(pedido.id, "aprovado");
     Logger.getInstance().debug("Pedido atualizado com sucesso", { pedido });
-    return this.pedidoRepository?.buscarStatusDePedidoPorId(pedido.getId());
+    return this.pedidoRepository?.buscarStatusDePedidoPorId(pedido.id);
   }
 }
 

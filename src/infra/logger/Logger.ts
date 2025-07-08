@@ -13,6 +13,13 @@ export default class Logger {
 		}
 	}
 
+	error (message: string, data: any) {
+		const levels = this.levels.slice(this.levels.indexOf(this.level));
+		if (levels.includes("error")) {
+			console.error("ERROR [" + new Date().toISOString() + "]", message, data);
+		}
+	}
+
 	setLevel (level: string) {
 		this.level = level;
 	}

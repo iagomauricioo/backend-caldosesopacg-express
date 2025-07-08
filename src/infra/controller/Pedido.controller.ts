@@ -26,6 +26,7 @@ export default class PedidoController {
 				const output = await this.buscarPedidos?.execute();
 				return HttpResponse.success(output, "Pedidos encontrados com sucesso");
 			} catch (error: any) {
+				Logger.getInstance().error("Erro ao buscar pedidos", { error });
 				if (error instanceof NotFoundError) {
 					return HttpResponse.notFound("Pedidos não encontrados");
 				}
@@ -37,9 +38,14 @@ export default class PedidoController {
 	private rotaBuscarPedidoPorId(): void {
 		this.httpServer?.register("get", "/pedidos/:id", async (params: any, body: any) => {
 			try {
-				const output = await this.pedidoRepository?.buscarPedidoPorId(params.id);
-				return HttpResponse.success(output, "Pedido encontrado com sucesso");
+				const pedidoId = parseInt(params.id);
+				if (isNaN(pedidoId)) {
+					return HttpResponse.badRequest("ID do pedido deve ser um número válido");
+				}
+				const pedido = await this.pedidoRepository?.buscarPedidoPorId(pedidoId);
+				return HttpResponse.success(pedido, "Pedido encontrado com sucesso");
 			} catch (error: any) {
+				Logger.getInstance().error("Erro ao buscar pedido", { error });
 				if (error instanceof NotFoundError) {
 					return HttpResponse.notFound("Pedido não encontrado");
 				}
@@ -51,9 +57,14 @@ export default class PedidoController {
 	private rotaBuscarStatusDePedidoPorId(): void {
 		this.httpServer?.register("get", "/pedidos/:id/status", async (params: any, body: any) => {
 			try {
-				const output = await this.pedidoRepository?.buscarStatusDePedidoPorId(params.id);
-				return HttpResponse.success(output, "Status do pedido encontrado com sucesso");
+				const pedidoId = parseInt(params.id);
+				if (isNaN(pedidoId)) {
+					return HttpResponse.badRequest("ID do pedido deve ser um número válido");
+				}
+				const pedido = await this.pedidoRepository?.buscarStatusDePedidoPorId(pedidoId);
+				return HttpResponse.success(pedido, "Status do pedido encontrado com sucesso");
 			} catch (error: any) {
+				Logger.getInstance().error("Erro ao buscar status do pedido", { error });
 				if (error instanceof NotFoundError) {
 					return HttpResponse.notFound("Status do pedido não encontrado");
 				}
