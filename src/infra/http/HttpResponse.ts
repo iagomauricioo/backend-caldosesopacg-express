@@ -26,8 +26,8 @@ export class HttpResponse {
     return {
       success: false,
       statusCode: 400,
-      message: "Dados inválidos",
-      error: message,
+      message: message || "Dados inválidos",
+      error: "Bad Request",
       details,
       timestamp: new Date().toISOString()
     };

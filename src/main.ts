@@ -25,8 +25,9 @@ import { PedidoRepositoryDatabase } from "./infra/repository/Pedido.repository";
 import BuscarPedidos from "./application/usecase/BuscarPedidos";
 import PedidoController from "./infra/controller/Pedido.controller";
 
-// Configurar logger para exibir SQL
-Logger.getInstance().setLevel("debug");
+// Configurar logger
+const logLevel = process.env.LOG_LEVEL || "info";
+Logger.getInstance().setLevel(logLevel as any);
 
 const httpServer = new ExpressAdapter();
 

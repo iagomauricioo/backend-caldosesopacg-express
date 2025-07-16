@@ -12,19 +12,60 @@ export default class ReceberWebhookCobranca {
   pedidoRepository?: PedidoRepository;
 
   async execute(input: any) {
-    Logger.getInstance().debug("Recebendo webhook de cobranca", { input });
+    const logger = Logger.getInstance();
+    
+    logger.info("Webhook de cobrança recebido", {
+      event: input.event,
+      paymentId: input.payment?.id,
+      externalReference: input.payment?.externalReference,
+      status: input.payment?.status,
+      value: input.payment?.value
+    });
+    
     if (input.event !== "PAYMENT_RECEIVED") {
+      logger.info("Evento de webhook ignorado", { event: input.event });
       return {
         message: "Webhook recebido com sucesso",
       };
     }
+    
+    logger.audit("PROCESSAR_PAGAMENTO", "pedido", {
+      paymentId: input.payment.id,
+      externalReference: input.payment.externalReference,
+      value: input.payment.value
+    });
+    
     const pedido = await this.pedidoRepository?.buscarPedidoPorId(input.payment.externalReference);
-    Logger.getInstance().debug("Pedido encontrado", { pedido });
+    
     if (!pedido) {
+      logger.warn("Pedido não encontrado para pagamento", {
+        externalReference: input.payment.externalReference,
+        paymentId: input.payment.id
+      });
       throw new NotFoundError("Pedido não encontrado");
     }
+    
+    logger.info("Pedido encontrado para processamento", {
+      pedidoId: pedido.id,
+      statusAtual: pedido.status,
+      paymentId: input.payment.id
+    });
+    
     await this.pedidoRepository?.atualizarStatusDePedidoPorId(pedido.id, "aprovado");
-    Logger.getInstance().debug("Pedido atualizado com sucesso", { pedido });
+    
+    logger.audit("PEDIDO_APROVADO", "pedido", {
+      pedidoId: pedido.id,
+      paymentId: input.payment.id,
+      value: input.payment.value,
+      statusAnterior: pedido.status,
+      statusAtual: "aprovado"
+    });
+    
+    logger.info("Pedido atualizado com sucesso", {
+      pedidoId: pedido.id,
+      novoStatus: "aprovado"
+    });
+    
     return this.pedidoRepository?.buscarStatusDePedidoPorId(pedido.id);
   }
 }

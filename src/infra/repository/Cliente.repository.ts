@@ -2,6 +2,7 @@ import Cliente from "../../domain/entity/Cliente.entity";
 import { inject } from "../di/DI";
 import DatabaseConnection from "../database/DatabaseConnection";
 import Logger from "../logger/Logger";
+import { ConflictError } from "../http/ApiError";
 
 // Port
 export default interface ClienteRepository {
@@ -33,8 +34,25 @@ export class ClienteRepositoryDatabase implements ClienteRepository {
 		const query = "insert into clientes (id, nome, cpf, telefone) values ($1, $2, $3, $4) returning id, nome, cpf, telefone";
 		const params = [cliente.getClienteId(), cliente.getNome(), cliente.getCpf(), cliente.getTelefone()];
 		Logger.getInstance().debug("SQL Query", { query, params });
-		const [result] = await this.connection?.query(query, params);
-		return { id: result.id };
+		
+		try {
+			const [result] = await this.connection?.query(query, params);
+			return { id: result.id };
+		} catch (error: any) {
+			// Tratar erros de duplicação
+			if (error.code === '23505') { // PostgreSQL unique constraint violation
+				if (error.constraint === 'clientes_cpf_key') {
+					throw new ConflictError("CPF já cadastrado no sistema");
+				}
+				if (error.constraint === 'clientes_telefone_key') {
+					throw new ConflictError("Telefone já cadastrado no sistema");
+				}
+				// Caso genérico de duplicação
+				throw new ConflictError("Dados já cadastrados no sistema");
+			}
+			// Re-throw outros erros
+			throw error;
+		}
 	}
 	
 	async buscarClientePorId (clienteId: string) {

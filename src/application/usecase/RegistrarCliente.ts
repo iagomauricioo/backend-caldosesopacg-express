@@ -21,7 +21,7 @@ export default class RegistrarCliente {
     const cliente = Cliente.create(input.nome, input.cpf, input.telefone);
     const clienteSalvo = await this.clienteRepository?.salvarCliente(cliente);
     if (!clienteSalvo) throw new Error("Erro ao salvar cliente");
-
+    
     if (!input.endereco) throw new Error("Endereço não informado");
     const endereco = Endereco.create(clienteSalvo.id, input.endereco.rua, input.endereco.numero, input.endereco.complemento || "", input.endereco.bairro, input.endereco.cep, input.endereco.pontoReferencia || "", input.endereco.enderecoPrincipal || true);
     await this.enderecoRepository?.salvarEndereco(endereco);

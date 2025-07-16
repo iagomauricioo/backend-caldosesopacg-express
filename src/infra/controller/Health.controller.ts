@@ -6,7 +6,7 @@ export default class HealthController {
   httpServer?: HttpServer;
 
   constructor() {
-    this.httpServer?.register("get", "/health", async () => {
+    this.httpServer?.register("get", "/health", async (params: any, body: any, req?: any) => {
       return await this.check();
     });
   }

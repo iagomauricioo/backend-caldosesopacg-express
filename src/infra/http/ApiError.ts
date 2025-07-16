@@ -21,6 +21,12 @@ export class ValidationError extends ApiError {
   }
 }
 
+export class ConflictError extends ApiError {
+  constructor(message: string, details?: any) {
+    super(message, 409, details);
+  }
+}
+
 export class ExternalServiceError extends ApiError {
   constructor(service: string, message: string, statusCode: number = 502, details?: any) {
     super(`Erro na comunicação com ${service}: ${message}`, statusCode, details);
