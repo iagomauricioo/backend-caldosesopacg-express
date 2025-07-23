@@ -142,7 +142,7 @@ CREATE TABLE configuracoes (
     chave VARCHAR(50) UNIQUE NOT NULL,
     valor TEXT NOT NULL,
     descricao TEXT,
-    data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 );
 
 -- Tabela de pagamentos

@@ -9,7 +9,7 @@ export interface EvolutionApiGateway {
 }
 
 export class EvolutionApiGatewayHttp implements EvolutionApiGateway {
-  private readonly base_url = "http://localhost:8081";
+  private readonly base_url_evolution_api = "http://localhost:8081";
   private readonly api_key = process.env.AUTHENTICATION_API_KEY;
   private readonly instance = process.env.INSTANCE_EVOLUTION_API;
 
@@ -21,12 +21,11 @@ export class EvolutionApiGatewayHttp implements EvolutionApiGateway {
         "text": mensagem,
         "delay": 1000
     }
-    const response = await axios.post(`${this.base_url}/message/sendText/${this.instance}`, input, {
-      headers: {
-        'apikey': this.api_key,
-        'Content-Type': 'application/json'
-      }
-    });
+    const headers = {
+      'apikey': this.api_key,
+      'Content-Type': 'application/json'
+    }
+    const response = await axios.post(`${this.base_url_evolution_api}/message/sendText/${this.instance}`, input, { headers });
     return response.data;
   }
 }

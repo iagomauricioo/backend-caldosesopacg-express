@@ -24,6 +24,7 @@ import ReceberWebhookCobranca from "./application/usecase/ReceberWebhookCobranca
 import { PedidoRepositoryDatabase } from "./infra/repository/Pedido.repository";
 import BuscarPedidos from "./application/usecase/BuscarPedidos";
 import PedidoController from "./infra/controller/Pedido.controller";
+import EnviarMensagemWhatsapp from "./application/usecase/EnviarMensagemWhatsapp";
 
 // Configurar logger
 const logLevel = process.env.LOG_LEVEL || "info";
@@ -55,6 +56,7 @@ Registry.getInstance().provide("gerarCobranca", new GerarCobranca());
 Registry.getInstance().provide("buscarQrCodePix", new BuscarQrCodePix());
 Registry.getInstance().provide("receberWebhookCobranca", new ReceberWebhookCobranca());
 Registry.getInstance().provide("buscarPedidos", new BuscarPedidos());
+Registry.getInstance().provide("enviarMensagemWhatsapp", new EnviarMensagemWhatsapp());
 
 // Controller
 Registry.getInstance().provide("clienteController", new ClienteController());
