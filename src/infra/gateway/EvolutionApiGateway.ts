@@ -23,7 +23,7 @@ export class EvolutionApiGatewayHttp implements EvolutionApiGateway {
     }
     const response = await axios.post(`${this.base_url}/message/sendText/caldos`, input, {
       headers: {
-        'apikey': 'senha',
+        'apikey': this.api_key,
         'Content-Type': 'application/json'
       }
     });
