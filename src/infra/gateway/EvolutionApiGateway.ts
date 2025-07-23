@@ -21,7 +21,7 @@ export class EvolutionApiGatewayHttp implements EvolutionApiGateway {
         "text": mensagem,
         "delay": 1000
     }
-    const response = await axios.post(`${this.base_url}/message/sendText/caldos`, input, {
+    const response = await axios.post(`${this.base_url}/message/sendText/${this.instance}`, input, {
       headers: {
         'apikey': this.api_key,
         'Content-Type': 'application/json'
