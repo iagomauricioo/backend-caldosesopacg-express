@@ -1,13 +1,14 @@
 import Endereco from "../../entity/Endereco.entity";
+import MensagemBase from "../MensagemBase";
 
-export default class SaiuParaEntrega {
+export default class SaiuParaEntrega implements MensagemBase {
 	constructor(
 		public readonly numero: string,
 		public readonly nome: string,
 		public readonly endereco: Endereco,
 	) {}
 
-    public getMensagem() {
+    public getMensagem(): string {
         return `
 🍲 *Caldos da Cynthia* 🍲
 
@@ -26,7 +27,7 @@ Obrigada pela preferência! ❤️
 *Caldos da Cynthia - Sabor que aquece o coração* 🔥`;
     }
 
-    public getNumero() {
+    public getNumero(): string {
         return this.numero;
-    }    
+    }
 }

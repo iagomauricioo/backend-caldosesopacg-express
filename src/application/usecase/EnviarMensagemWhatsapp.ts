@@ -1,4 +1,4 @@
-import SaiuParaEntrega from "../../domain/template/entrega/SaiuParaEntrega";
+import SaiuParaEntrega from "../../domain/template/entrega/SaiuParaEntrega.template";
 import { inject } from "../../infra/di/DI";
 import { EvolutionApiGateway, EvolutionApiGatewayHttp } from "../../infra/gateway/EvolutionApiGateway";
 
