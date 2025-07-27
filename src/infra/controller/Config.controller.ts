@@ -1,54 +1,49 @@
-import BuscarCep from "../../application/usecase/BuscarCep";
-import Cep from "../../domain/vo/Cep";
 import { inject } from "../di/DI";
 import HttpServer from "../http/HttpServer";
 import Logger from "../logger/Logger";
 import { HttpResponse } from "../http/HttpResponse";
-import { ApiError, NotFoundError } from "../http/ApiError";
+import AbrirRestaurante from "../../application/usecase/AbrirRestaurante";
+import FecharRestaurante from "../../application/usecase/FecharRestaurante";
+import ConfigRepository from "../repository/Config.repository";
 
 export default class ConfigController {
 	@inject("httpServer")
 	httpServer?: HttpServer;
-	@inject("buscarCep")
-	buscarCep?: BuscarCep;
-
+	@inject("abrirRestaurante")
+	abrirRestaurante?: AbrirRestaurante;
+	@inject("fecharRestaurante")
+	fecharRestaurante?: FecharRestaurante;
+	@inject("configRepository")
+	configRepository?: ConfigRepository;
+	
 	constructor () {
-		this.httpServer?.register("get", "/cep/:cep", async (params: any, body: any, req?: any) => {
-			const logger = req?.logger || Logger.getInstance();
+		this.httpServer?.register("get", "/statusRestaurante", async (params: any, body: any, req?: any) => {
 			try {
-				logger.audit("BUSCAR_CEP", "cep", { cep: params.cep });
-				
-				const output = await this.buscarCep?.execute(new Cep(params.cep));
-				if (!output) {
-					throw new NotFoundError("CEP não encontrado");
-				}
-				
-				logger.info("CEP encontrado", { cep: params.cep, rua: output.rua });
-				return HttpResponse.success(output, "CEP encontrado com sucesso");
+				const output = await this.configRepository?.buscarStatusRestaurante();
+				return HttpResponse.success(output, "Status do restaurante buscado com sucesso");
 			} catch (error: any) {
-				if (error instanceof NotFoundError) {
-					logger.warn("CEP não encontrado", { cep: params.cep }, error);
-					return HttpResponse.notFound(error.message);
-				}
-				
-				if (error.name === 'ValidationError' || error.message?.includes('inválido')) {
-					logger.warn("CEP inválido", { cep: params.cep }, error);
-					return HttpResponse.badRequest("CEP inválido");
-				}
-				
-				if (error instanceof ApiError) {
-					logger.error("Erro de API ao buscar CEP", { cep: params.cep }, error);
-					return {
-						success: false,
-						statusCode: error.statusCode,
-						message: error.message,
-						details: error.details,
-						timestamp: new Date().toISOString()
-					};
-				}
-				
-				logger.error("Erro interno ao buscar CEP", { cep: params.cep }, error);
-				return HttpResponse.internalServerError("Erro ao buscar CEP", error instanceof Error ? error.message : error);
+				Logger.getInstance().error("Erro interno ao buscar status do restaurante", { buscarStatusRestaurante: body }, error);
+				return HttpResponse.internalServerError("Erro ao buscar status do restaurante", error instanceof Error ? error.message : error);
+			}
+		});
+		
+		this.httpServer?.register("get", "/abrirRestaurante", async (params: any, body: any, req?: any) => {
+			try {
+				const output = await this.abrirRestaurante?.execute();
+				return HttpResponse.success(output, "Restaurante aberto com sucesso");
+			} catch (error: any) {
+				Logger.getInstance().error("Erro interno ao abrir restaurante", { abrirRestaurante: body }, error);
+				return HttpResponse.internalServerError("Erro ao abrir restaurante", error instanceof Error ? error.message : error);
+			}
+		});
+
+		this.httpServer?.register("get", "/fecharRestaurante", async (params: any, body: any, req?: any) => {
+			try {
+				const output = await this.fecharRestaurante?.execute();
+				return HttpResponse.success(output, "Restaurante fechado com sucesso");
+			} catch (error: any) {
+				Logger.getInstance().error("Erro interno ao fechar restaurante", { fecharRestaurante: body }, error);
+				return HttpResponse.internalServerError("Erro ao fechar restaurante", error instanceof Error ? error.message : error);
 			}
 		});
 	}

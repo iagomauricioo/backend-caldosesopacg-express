@@ -25,6 +25,10 @@ import { PedidoRepositoryDatabase } from "./infra/repository/Pedido.repository";
 import BuscarPedidos from "./application/usecase/BuscarPedidos";
 import PedidoController from "./infra/controller/Pedido.controller";
 import EnviarMensagemWhatsapp from "./application/usecase/EnviarMensagemWhatsapp";
+import AbrirRestaurante from "./application/usecase/AbrirRestaurante";
+import FecharRestaurante from "./application/usecase/FecharRestaurante";
+import { ConfigRepositoryDatabase } from "./infra/repository/Config.repository";
+import ConfigController from "./infra/controller/Config.controller";
 
 // Configurar logger
 const logLevel = process.env.LOG_LEVEL || "info";
@@ -45,6 +49,7 @@ Registry.getInstance().provide("clienteRepository", new ClienteRepositoryDatabas
 Registry.getInstance().provide("enderecoRepository", new EnderecoRepositoryDatabase());
 Registry.getInstance().provide("produtoRepository", new ProdutoRepositoryDatabase());
 Registry.getInstance().provide("pedidoRepository", new PedidoRepositoryDatabase());
+Registry.getInstance().provide("configRepository", new ConfigRepositoryDatabase());
 
 // Usecase
 Registry.getInstance().provide("buscarCliente", new BuscarCliente());
@@ -57,6 +62,8 @@ Registry.getInstance().provide("buscarQrCodePix", new BuscarQrCodePix());
 Registry.getInstance().provide("receberWebhookCobranca", new ReceberWebhookCobranca());
 Registry.getInstance().provide("buscarPedidos", new BuscarPedidos());
 Registry.getInstance().provide("enviarMensagemWhatsapp", new EnviarMensagemWhatsapp());
+Registry.getInstance().provide("abrirRestaurante", new AbrirRestaurante());
+Registry.getInstance().provide("fecharRestaurante", new FecharRestaurante());
 
 // Controller
 Registry.getInstance().provide("clienteController", new ClienteController());
@@ -66,5 +73,6 @@ Registry.getInstance().provide("cepController", new CepController());
 Registry.getInstance().provide("cobrancaController", new CobrancaController());
 Registry.getInstance().provide("healthController", new HealthController());
 Registry.getInstance().provide("pedidoController", new PedidoController());
+Registry.getInstance().provide("configController", new ConfigController());
 
 httpServer.listen(8080);

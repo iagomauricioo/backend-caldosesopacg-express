@@ -1,9 +1,8 @@
-import Produto, { VariacaoProduto } from "../../domain/entity/Produto.entity";
 import { inject } from "../di/DI";
 import DatabaseConnection from "../database/DatabaseConnection";
 
 export default interface ConfigRepository {
-  buscarStatusRestaurante(produto: Produto): Promise<void>;
+  buscarStatusRestaurante(): Promise<any>;
   alterarStatusRestauranteParaAberto(): Promise<void>;
   alterarStatusRestauranteParaFechado(): Promise<void>;
 }
@@ -12,14 +11,14 @@ export class ConfigRepositoryDatabase implements ConfigRepository {
   @inject("databaseConnection")
   connection?: DatabaseConnection;
 
-  async buscarStatusRestaurante(produto: Produto): Promise<void> {
+  async buscarStatusRestaurante(): Promise<any> {
     const query = `
-      SELECT valor FROM configuracoes
+      SELECT valor AS loja_aberta FROM configuracoes
       WHERE chave = 'loja_aberta'
     `;
 
     const result = await this.connection?.query(query, []);
-    return result;
+    return result[0];
   }
 
   async alterarStatusRestauranteParaAberto(): Promise<void> {

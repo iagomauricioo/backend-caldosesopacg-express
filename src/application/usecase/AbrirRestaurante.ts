@@ -7,6 +7,9 @@ export default class AbrirRestaurante {
 
 	async execute () {
 		await this.configRepository?.alterarStatusRestauranteParaAberto();
-		return true;
+		const status = await this.configRepository?.buscarStatusRestaurante();
+		return {
+			"loja_aberta": status.loja_aberta,
+		};
 	}
 }

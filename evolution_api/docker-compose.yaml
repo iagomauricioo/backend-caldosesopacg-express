@@ -1,0 +1,39 @@
+services:
+  evolution-api:
+    container_name: evolution_api
+    image: evoapicloud/evolution-api:latest
+    ports:
+      - "8081:8080"
+    env_file:
+      - .env
+    volumes:
+      - evolution_instances:/evolution/instances
+    depends_on:
+      - postgres_evolution_api
+      - redis_evolution_api
+
+  postgres_evolution_api:
+    container_name: postgres_evolution_api
+    image: postgres:15
+    command: ["postgres", "-c", "max_connections=1000"]
+    ports:
+      - 5434:5432
+    environment:
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    volumes:
+      - postgres_evolution_api:/var/lib/postgresql/data
+
+  redis_evolution_api:
+    image: redis:latest
+    container_name: redis_evolution_api
+    command: >
+      redis-server --port 6379 --appendonly yes
+    volumes:
+      - redis_evolution_api:/data
+    ports:
+      - 6379:6379
+
+volumes:
+  evolution_instances:
+  postgres_evolution_api:
+  redis_evolution_api:
