@@ -10,6 +10,8 @@ API REST para gerenciamento de clientes e pedidos do sistema de caldos e sopas.
 - **Jest** para testes
 - **Sinon** para mocks
 - **Docker** para containerização
+- **Evolution API** para integração com WhatsApp
+- **Redis** para cache da Evolution API
 
 ## 📋 Pré-requisitos
 
@@ -38,7 +40,22 @@ npm run docker:start
 # Aguarde alguns segundos para o banco inicializar
 ```
 
+### 4. Configure a Evolution API (WhatsApp)
+```bash
+# Navegue para a pasta da Evolution API
+cd evolution_api/
 
+# Crie o arquivo .env com as configurações necessárias
+cp .env.example .env  # Se existir um exemplo
+# Ou crie manualmente o arquivo .env com as seguintes variáveis:
+# DATABASE_PASSWORD=sua_senha_aqui
+# AUTHENTICATION_TYPE=apikey
+# AUTHENTICATION_API_KEY=sua_api_key_aqui
+# AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES=true
+
+# Inicie a Evolution API
+docker-compose up -d
+```
 
 ## 🏃‍♂️ Como Executar
 
@@ -69,6 +86,19 @@ npm run docker:stop
 npm run docker:clean
 ```
 
+### Evolution API
+```bash
+# Inicia a Evolution API
+cd evolution_api/
+docker-compose up -d
+
+# Para a Evolution API
+docker-compose down
+
+# Remove containers e volumes da Evolution API
+docker-compose down -v
+```
+
 ## 📡 Endpoints da API
 
 ### Com Postman
@@ -91,6 +121,9 @@ src/
 │   ├── repository/      # Repositórios
 │   └── di/              # Injeção de dependência
 └── main.ts              # Ponto de entrada
+
+evolution_api/            # Evolution API para WhatsApp
+└── docker-compose.yaml  # Configuração da Evolution API
 ```
 
 ### Docker Compose
@@ -99,6 +132,36 @@ O arquivo `docker-compose.yml` na raiz do projeto configura:
 - Usuário: postgres
 - Senha: 123456
 - Database: app
+
+### Evolution API
+O arquivo `evolution_api/docker-compose.yaml` configura:
+- Evolution API na porta 8081
+- PostgreSQL na porta 5434
+- Redis na porta 6379
+- Volumes para persistência de dados
+
+## 🔧 Configuração da Evolution API
+
+A Evolution API é utilizada para integração com WhatsApp. Para configurar:
+
+1. **Crie o arquivo `.env` na pasta `evolution_api/`:**
+```env
+DATABASE_PASSWORD=sua_senha_aqui
+AUTHENTICATION_TYPE=apikey
+AUTHENTICATION_API_KEY=sua_api_key_aqui
+AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES=true
+```
+
+2. **Inicie os serviços:**
+```bash
+cd evolution_api/
+docker-compose up -d
+```
+
+3. **Configure uma instância do WhatsApp:**
+- Acesse `http://localhost:8081`
+- Crie uma nova instância
+- Escaneie o QR Code com seu WhatsApp
 
 ## 🐛 Troubleshooting
 
@@ -112,6 +175,11 @@ O arquivo `docker-compose.yml` na raiz do projeto configura:
 2. **Erro de dependências:**
    - Delete `node_modules` e `package-lock.json`
    - Execute `npm install` novamente
+
+3. **Problemas com Evolution API:**
+   - Verifique se as portas 8081, 5434 e 6379 estão disponíveis
+   - Verifique se o arquivo `.env` está configurado corretamente
+   - Execute `docker-compose logs evolution-api` para ver logs
 
 ## 📝 Scripts Disponíveis
 
