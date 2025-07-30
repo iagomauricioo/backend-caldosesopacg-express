@@ -22,7 +22,8 @@ export default class ReceberWebhookCobranca {
       value: input.payment?.value
     });
     
-    if (input.event !== "PAYMENT_RECEIVED") {
+    // Processar tanto PAYMENT_RECEIVED quanto PAYMENT_CONFIRMED
+    if (input.event !== "PAYMENT_RECEIVED" && input.event !== "PAYMENT_CONFIRMED") {
       logger.info("Evento de webhook ignorado", { event: input.event });
       return {
         message: "Webhook recebido com sucesso",
@@ -32,38 +33,42 @@ export default class ReceberWebhookCobranca {
     logger.audit("PROCESSAR_PAGAMENTO", "pedido", {
       paymentId: input.payment.id,
       externalReference: input.payment.externalReference,
-      value: input.payment.value
+      value: input.payment.value,
+      event: input.event
     });
     
-    const pedido = await this.pedidoRepository?.buscarPedidoPorId(input.payment.externalReference);
+    // Buscar pedido pelo payment.id (pagamento_id no banco)
+    const pedido = await this.pedidoRepository?.buscarPedidoPorPagamentoId(input.payment.id);
     
     if (!pedido) {
       logger.warn("Pedido não encontrado para pagamento", {
-        externalReference: input.payment.externalReference,
-        paymentId: input.payment.id
+        paymentId: input.payment.id,
+        externalReference: input.payment.externalReference
       });
       throw new NotFoundError("Pedido não encontrado");
     }
     
     logger.info("Pedido encontrado para processamento", {
       pedidoId: pedido.id,
-      statusAtual: pedido.status,
+      statusAtual: pedido.pagamento_status,
       paymentId: input.payment.id
     });
     
-    await this.pedidoRepository?.atualizarStatusDePedidoPorId(pedido.id, "aprovado");
+    // Atualizar status do pagamento para aprovado
+    await this.pedidoRepository?.atualizarStatusPagamentoPorId(pedido.id, "aprovado");
     
-    logger.audit("PEDIDO_APROVADO", "pedido", {
+    logger.audit("PEDIDO_PAGO", "pedido", {
       pedidoId: pedido.id,
       paymentId: input.payment.id,
       value: input.payment.value,
-      statusAnterior: pedido.status,
-      statusAtual: "aprovado"
+      statusAnterior: pedido.pagamento_status,
+      statusAtual: "aprovado",
+      event: input.event
     });
     
     logger.info("Pedido atualizado com sucesso", {
       pedidoId: pedido.id,
-      novoStatus: "aprovado"
+      novoStatusPagamento: "aprovado"
     });
     
     return this.pedidoRepository?.buscarStatusDePedidoPorId(pedido.id);

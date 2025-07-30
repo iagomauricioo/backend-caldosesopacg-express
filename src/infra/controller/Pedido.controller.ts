@@ -4,6 +4,7 @@ import { HttpResponse } from "../http/HttpResponse";
 import Logger from "../logger/Logger";
 import { ApiError, NotFoundError, ValidationError, ExternalServiceError } from "../http/ApiError";
 import BuscarPedidos from "../../application/usecase/BuscarPedidos";
+import CriarPedido from "../../application/usecase/CriarPedido";
 import PedidoRepository from "../repository/Pedido.repository";
 
 export default class PedidoController {
@@ -11,6 +12,8 @@ export default class PedidoController {
 	httpServer?: HttpServer;
 	@inject("buscarPedidos")
 	buscarPedidos?: BuscarPedidos;
+	@inject("criarPedido")
+	criarPedido?: CriarPedido;
 	@inject("pedidoRepository")
 	pedidoRepository?: PedidoRepository;
 
@@ -18,6 +21,7 @@ export default class PedidoController {
 		this.rotaBuscarPedidos();
 		this.rotaBuscarPedidoPorId();
 		this.rotaBuscarStatusDePedidoPorId();
+		this.rotaCriarPedido();
 	}
 
 	private rotaBuscarPedidos(): void {
@@ -93,6 +97,30 @@ export default class PedidoController {
 				}
 				logger.error("Erro interno ao buscar status do pedido", { pedidoId: parseInt(params.id) }, error);
 				return HttpResponse.internalServerError("Erro ao buscar status do pedido", error instanceof Error ? error.message : error);
+			}
+		});
+	}
+
+	private rotaCriarPedido(): void {
+		this.httpServer?.register("post", "/pedidos", async (params: any, body: any, req?: any) => {
+			const logger = req?.logger || Logger.getInstance();
+			try {
+				logger.audit("CRIAR_PEDIDO", "pedido", body);
+
+				const output = await this.criarPedido?.execute(body);
+				logger.info("Pedido criado com sucesso", { pedidoId: output.pedidoId });
+				return HttpResponse.success(output, "Pedido criado com sucesso");
+			} catch (error: any) {
+				if (error instanceof ValidationError) {
+					logger.warn("Pedido inválido", {}, error);
+					return HttpResponse.badRequest("Pedido inválido", error.message);
+				}
+				if (error instanceof ExternalServiceError) {
+					logger.error("Erro ao criar pedido", {}, error);
+					return HttpResponse.internalServerError("Erro ao criar pedido", error.message);
+				}
+				logger.error("Erro interno ao criar pedido", {}, error);
+				return HttpResponse.internalServerError("Erro ao criar pedido", error instanceof Error ? error.message : error);
 			}
 		});
 	}
